@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 // GANTI dengan domain Hostinger kamu (dipakai untuk canonical URL, OG tag, sitemap).
-const SITE_URL = 'https://namadomainkamu.com';
+const SITE_URL = 'https://frgwnabim.site';
 
 export default defineConfig({
   site: SITE_URL,
