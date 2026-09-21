@@ -1,0 +1,352 @@
+---
+import { site, navLinks } from '../data/site';
+---
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#top" aria-label={`${site.name}, kembali ke atas`}>
+      <span class="brand-mark" aria-hidden="true">{site.initials}</span>
+      <span class="brand-text">
+        <strong>{site.name}</strong>
+        <small>{site.role}</small>
+      </span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Navigasi utama">
+      {
+        navLinks.map((link) => (
+          <a href={link.href} data-nav-link>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="header-actions">
+      <button
+        class="icon-btn theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Ganti mode terang atau gelap"
+        title="Ganti tema"
+      >
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+        </svg>
+      </button>
+
+      <a class="btn btn--primary header-cta" href="#kontak">Hubungi saya</a>
+
+      <button
+        class="icon-btn nav-toggle"
+        id="nav-toggle"
+        type="button"
+        aria-label="Buka menu"
+        aria-expanded="false"
+        aria-controls="nav-mobile"
+      >
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav-mobile" id="nav-mobile" aria-label="Navigasi mobile" hidden>
+    {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    <a class="btn btn--primary" href="#kontak">Hubungi saya</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface-glass);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+
+  .site-header.is-stuck {
+    border-bottom-color: var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Browser tanpa dukungan backdrop-filter tetap dapat header yang terbaca */
+  @supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+    .site-header {
+      background: var(--surface);
+    }
+  }
+
+  .header-inner {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  /* Logo */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--ink);
+    min-width: 0;
+  }
+
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 2.45rem;
+    height: 2.45rem;
+    flex: none;
+    border-radius: 13px;
+    background: var(--gradient-brand);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 8px 18px -8px rgba(30, 112, 210, 0.9);
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    min-width: 0;
+  }
+
+  .brand-text strong {
+    font-size: 0.97rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .brand-text small {
+    font-size: 0.73rem;
+    color: var(--ink-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Navigasi desktop */
+  .nav-desktop {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.28rem;
+    border-radius: 999px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+  }
+
+  .nav-desktop a {
+    position: relative;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
+  }
+
+  .nav-desktop a:hover {
+    color: var(--ink);
+    background: var(--brand-soft);
+  }
+
+  .nav-desktop a.is-active {
+    color: #fff;
+    background: var(--gradient-brand);
+  }
+
+  /* Aksi kanan */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 2.45rem;
+    height: 2.45rem;
+    flex: none;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+
+  .icon-btn:hover {
+    color: var(--brand-strong);
+    border-color: var(--brand);
+  }
+
+  .theme-toggle svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .icon-moon {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .icon-sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .icon-moon {
+    display: block;
+  }
+
+  .header-cta {
+    display: none;
+    padding: 0.62rem 1.15rem;
+    font-size: 0.87rem;
+  }
+
+  /* Tombol hamburger */
+  .nav-toggle {
+    /* flex, bukan grid, supaya ketiga garis tidak ikut meregang
+       dan animasi silang (X) mendarat tepat di tengah */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-toggle .bar {
+    display: block;
+    width: 17px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.25s var(--ease), opacity 0.2s var(--ease);
+  }
+
+  .nav-toggle .bar + .bar {
+    margin-top: 4px;
+  }
+
+  .nav-toggle[aria-expanded='true'] .bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded='true'] .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded='true'] .bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Navigasi mobile */
+  .nav-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.85rem clamp(1.15rem, 4vw, 2.5rem) 1.35rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .nav-mobile[hidden] {
+    display: none;
+  }
+
+  .nav-mobile a:not(.btn) {
+    padding: 0.7rem 0.8rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .nav-mobile a:not(.btn):hover {
+    background: var(--brand-soft);
+  }
+
+  .nav-mobile .btn {
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .nav-desktop {
+      display: flex;
+    }
+    .header-cta {
+      display: inline-flex;
+    }
+    .nav-toggle,
+    .nav-mobile {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .brand-text small {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Ganti tema terang / gelap dan simpan pilihannya
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch (e) {
+      /* localStorage bisa diblokir di mode privat, abaikan saja */
+    }
+  });
+
+  // Menu mobile
+  const navToggle = document.getElementById('nav-toggle');
+  const navMobile = document.getElementById('nav-mobile');
+
+  const closeNav = () => {
+    navToggle?.setAttribute('aria-expanded', 'false');
+    navToggle?.setAttribute('aria-label', 'Buka menu');
+    navMobile?.setAttribute('hidden', '');
+  };
+
+  navToggle?.addEventListener('click', () => {
+    const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
+    if (isOpen) {
+      closeNav();
+    } else {
+      navToggle.setAttribute('aria-expanded', 'true');
+      navToggle.setAttribute('aria-label', 'Tutup menu');
+      navMobile?.removeAttribute('hidden');
+    }
+  });
+
+  navMobile?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeNav();
+  });
+
+  // Beri bayangan pada header setelah halaman digulir
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.classList.toggle('is-stuck', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

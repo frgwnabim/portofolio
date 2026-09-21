@@ -1,0 +1,179 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { PROJECTS_VISIBLE, type Project } from '../data/projects';
+
+interface Props {
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  accent: 'se' | 'da';
+  projects: Project[];
+}
+
+const { id, eyebrow, title, description, accent, projects } = Astro.props;
+
+const hiddenCount = Math.max(projects.length - PROJECTS_VISIBLE, 0);
+const gridId = `grid-${id}`;
+---
+
+<section class="section project-section" id={id} data-accent={accent}>
+  <div class="container">
+    <header class="section-head reveal">
+      <span class="eyebrow">{eyebrow}</span>
+      <h2>{title}</h2>
+      <p>{description}</p>
+      <span class="count">
+        {projects.length} project
+      </span>
+    </header>
+
+    {
+      projects.length === 0 ? (
+        <p class="empty">Belum ada project di bagian ini. Tambahkan lewat file <code>src/data/projects.ts</code>.</p>
+      ) : (
+        <div class="grid reveal" id={gridId}>
+          {projects.map((project, i) => (
+            <ProjectCard
+              project={project}
+              accent={accent}
+              index={i}
+              featured={i === 0 && projects.length >= 3}
+              hidden={i >= PROJECTS_VISIBLE}
+            />
+          ))}
+        </div>
+      )
+    }
+
+    {
+      hiddenCount > 0 && (
+        <div class="show-more reveal">
+          <button
+            class="btn btn--ghost"
+            type="button"
+            data-show-more={gridId}
+            data-label-more={`Lihat ${hiddenCount} project lainnya`}
+            data-label-less="Tampilkan lebih sedikit"
+            aria-expanded="false"
+            aria-controls={gridId}
+          >
+            <span class="label">Lihat {hiddenCount} project lainnya</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .project-section {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+
+  .section-head {
+    position: relative;
+  }
+
+  .count {
+    align-self: flex-start;
+    padding: 0.26rem 0.7rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--ink-3);
+  }
+
+  .grid {
+    display: grid;
+    gap: clamp(1rem, 2.2vw, 1.6rem);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .show-more {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .show-more .btn svg {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.25s var(--ease);
+  }
+
+  .show-more .btn[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  .empty {
+    padding: 2rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    text-align: center;
+    color: var(--ink-3);
+  }
+
+  .empty code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--brand-strong);
+  }
+</style>
+
+<script>
+  /* Tombol "Lihat lebih banyak": menampilkan kartu project sisanya. */
+  document.querySelectorAll<HTMLButtonElement>('[data-show-more]').forEach((button) => {
+    const gridId = button.dataset.showMore;
+    if (!gridId) return;
+
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+
+    const extras = Array.from(grid.querySelectorAll<HTMLElement>('[data-extra="true"]'));
+    const label = button.querySelector<HTMLElement>('.label');
+
+    button.addEventListener('click', () => {
+      const willExpand = button.getAttribute('aria-expanded') !== 'true';
+
+      extras.forEach((card) => {
+        if (willExpand) {
+          card.removeAttribute('hidden');
+          card.classList.add('is-visible');
+        } else {
+          card.setAttribute('hidden', '');
+        }
+      });
+
+      button.setAttribute('aria-expanded', String(willExpand));
+      if (label) {
+        label.textContent = willExpand
+          ? button.dataset.labelLess ?? 'Tampilkan lebih sedikit'
+          : button.dataset.labelMore ?? 'Lihat lebih banyak';
+      }
+
+      // Waktu ditutup kembali, gulirkan ke awal bagian supaya tidak bingung
+      if (!willExpand) {
+        const section = button.closest('section');
+        section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>

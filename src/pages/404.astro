@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title={`Halaman tidak ditemukan | ${site.name}`} description="Halaman yang kamu cari tidak tersedia.">
+  <section class="section notfound">
+    <div class="container">
+      <span class="code gradient-text">404</span>
+      <h1>Halaman tidak ditemukan</h1>
+      <p>
+        Tautannya mungkin salah ketik atau halamannya sudah dipindahkan. Silakan kembali ke beranda.
+      </p>
+      <a class="btn btn--primary" href="/">Kembali ke beranda</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    min-height: 68vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+
+  .notfound .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    max-width: 34rem;
+  }
+
+  .code {
+    font-size: clamp(4rem, 12vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .notfound h1 {
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+  }
+
+  .notfound p {
+    color: var(--ink-2);
+  }
+
+  .notfound .btn {
+    margin-top: 0.6rem;
+  }
+</style>

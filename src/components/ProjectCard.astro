@@ -1,0 +1,431 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  accent: 'se' | 'da';
+  featured?: boolean;
+  hidden?: boolean;
+  index: number;
+}
+
+const { project, accent, featured = false, hidden = false, index } = Astro.props;
+
+const statusLabel: Record<NonNullable<Project['status']>, string> = {
+  live: 'Live',
+  wip: 'Dalam proses',
+  private: 'Privat',
+};
+
+const status = project.status ?? 'live';
+
+// Inisial untuk preview cadangan kalau project belum punya gambar.
+const initials = project.title
+  .replace(/^contoh:\s*/i, '')
+  .split(/\s+/)
+  .filter((word) => /[a-z0-9]/i.test(word))
+  .slice(0, 2)
+  .map((word) => word[0]?.toUpperCase() ?? '')
+  .join('');
+
+const isExternal = /^https?:\/\//.test(project.link);
+---
+
+<article
+  class:list={['project-card', { 'is-featured': featured }]}
+  data-accent={accent}
+  data-extra={hidden ? 'true' : null}
+  hidden={hidden}
+  style={`--reveal-delay:${Math.min(index, 5) * 70}ms`}
+>
+  <div class="preview">
+    {
+      project.cover ? (
+        <img
+          src={project.cover}
+          alt={`Pratinjau ${project.title}`}
+          loading="lazy"
+          decoding="async"
+          width="1280"
+          height="720"
+        />
+      ) : (
+        <div class="preview-fallback" aria-hidden="true">
+          <div class="mock-bar">
+            <span /> <span /> <span />
+          </div>
+          <div class="mock-window">
+            <span class="initials">{initials}</span>
+            <div class="mock-lines">
+              <i style="width:100%" /> <i style="width:72%" /> <i style="width:86%" />
+            </div>
+          </div>
+        </div>
+      )
+    }
+    <span class:list={['status', `status--${status}`]}>{statusLabel[status]}</span>
+  </div>
+
+  <div class="body">
+    <div class="meta">
+      {project.year && <span class="year">{project.year}</span>}
+      {project.highlight && <span class="highlight">{project.highlight}</span>}
+    </div>
+
+    <h3>
+      <a
+        href={project.link}
+        target={isExternal ? '_blank' : null}
+        rel={isExternal ? 'noopener noreferrer' : null}
+      >
+        {project.title}
+      </a>
+    </h3>
+
+    <p class="desc">{project.description}</p>
+
+    {
+      project.tags.length > 0 && (
+        <ul class="tags">
+          {project.tags.slice(0, 5).map((tag) => (
+            <li class="tag">{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="actions">
+      <span class="open">
+        Buka project
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17 17 7M9 7h8v8"></path>
+        </svg>
+      </span>
+
+      {
+        project.repo && (
+          <a class="repo" href={project.repo} target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.2c-3.34.72-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.1-.75.08-.73.08-.73 1.21.08 1.84 1.25 1.84 1.25 1.08 1.84 2.83 1.31 3.52 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.4 1.24-3.24-.12-.3-.54-1.53.12-3.18 0 0 1.01-.33 3.3 1.24a11.4 11.4 0 0 1 6.01 0c2.29-1.57 3.3-1.24 3.3-1.24.66 1.65.24 2.88.12 3.18.77.84 1.24 1.92 1.24 3.24 0 4.63-2.81 5.65-5.49 5.95.43.38.82 1.1.82 2.22v3.29c0 .32.21.7.83.58A12 12 0 0 0 12 .5z" />
+            </svg>
+            <span class="sr-only">Lihat kode sumber {project.title} di GitHub</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    --card-accent: var(--gradient-se);
+    --card-tint: var(--blue-100);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+
+  .project-card[data-accent='da'] {
+    --card-accent: var(--gradient-da);
+    --card-tint: var(--accent-soft);
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--card-accent);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+    z-index: 3;
+  }
+
+  .project-card:hover,
+  .project-card:focus-within {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-strong);
+  }
+
+  .project-card:hover::before,
+  .project-card:focus-within::before {
+    opacity: 1;
+  }
+
+  /* Area pratinjau */
+  .preview {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--surface-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .project-card:hover .preview img {
+    transform: scale(1.045);
+  }
+
+  .preview-fallback {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 100%;
+    background:
+      radial-gradient(70% 90% at 50% 0%, var(--card-tint), transparent 70%),
+      var(--surface-muted);
+  }
+
+  .preview-fallback .mock-bar {
+    position: absolute;
+    top: 0.8rem;
+    left: 0.9rem;
+    display: flex;
+    gap: 0.28rem;
+  }
+
+  .preview-fallback .mock-bar span {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+
+  .preview-fallback .mock-window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.95rem;
+    width: min(62%, 15rem);
+  }
+
+  .preview-fallback .initials {
+    display: grid;
+    place-items: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 18px;
+    background: var(--card-accent);
+    color: #fff;
+    font-size: 1.22rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    box-shadow: 0 12px 26px -12px rgba(30, 112, 210, 0.9);
+  }
+
+  .preview-fallback .mock-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .preview-fallback .mock-lines i {
+    height: 0.36rem;
+    border-radius: 999px;
+    background: var(--border);
+  }
+
+  .status {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--ink-2);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .status--live {
+    color: #0f8a56;
+  }
+
+  .status--wip {
+    color: #b8710d;
+  }
+
+  :global(:root[data-theme='dark']) .status--live {
+    color: #56d99a;
+  }
+
+  :global(:root[data-theme='dark']) .status--wip {
+    color: #ffc773;
+  }
+
+  /* Isi kartu */
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.25rem 1.3rem 1.35rem;
+    flex: 1;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    min-height: 1.1rem;
+  }
+
+  .year {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+  }
+
+  .highlight {
+    padding: 0.16rem 0.55rem;
+    border-radius: 999px;
+    background: var(--card-tint);
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 1.12rem;
+    line-height: 1.32;
+    letter-spacing: -0.012em;
+  }
+
+  h3 a {
+    color: var(--ink);
+    transition: color 0.2s var(--ease);
+  }
+
+  /* Seluruh kartu ikut bisa diklik lewat tautan judul */
+  h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .project-card:hover h3 a {
+    color: var(--brand-strong);
+  }
+
+  .desc {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.95rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .open {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--brand-strong);
+  }
+
+  .open svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    transition: transform 0.25s var(--ease);
+  }
+
+  .project-card:hover .open svg {
+    transform: translate(2px, -2px);
+  }
+
+  .repo {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9px;
+    color: var(--ink-3);
+    border: 1px solid var(--border);
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+
+  .repo:hover {
+    color: var(--ink);
+    border-color: var(--border-strong);
+  }
+
+  .repo svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  /* Kartu unggulan: lebih lebar di layar besar */
+  @media (min-width: 1000px) {
+    .project-card.is-featured {
+      grid-column: span 2;
+      flex-direction: row;
+    }
+
+    .project-card.is-featured .preview {
+      flex: 0 0 52%;
+      aspect-ratio: auto;
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+    }
+
+    .project-card.is-featured .body {
+      padding: 1.6rem 1.7rem;
+      justify-content: center;
+    }
+
+    .project-card.is-featured h3 {
+      font-size: 1.35rem;
+    }
+
+    .project-card.is-featured .preview-fallback .initials {
+      width: 4.4rem;
+      height: 4.4rem;
+      font-size: 1.55rem;
+      border-radius: 22px;
+    }
+
+    .project-card.is-featured .desc {
+      font-size: 0.97rem;
+    }
+  }
+</style>
