@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import ProjectSection from '../components/ProjectSection.astro';
+import Contact from '../components/Contact.astro';
+import { sections } from '../data/site';
+import { softwareProjects, dataProjects } from '../data/projects';
+---
+
+<BaseLayout>
+  <Hero />
+  <About />
+
+  <!-- Bagian 01: Software Engineering -->
+  <ProjectSection
+    id={sections.software.id}
+    eyebrow={sections.software.eyebrow}
+    title={sections.software.title}
+    description={sections.software.description}
+    accent="se"
+    projects={softwareProjects}
+  />
+
+  <!-- Bagian 02: Data Analytics, diberi latar berbeda supaya pemisahannya jelas -->
+  <div class="band">
+    <ProjectSection
+      id={sections.data.id}
+      eyebrow={sections.data.eyebrow}
+      title={sections.data.title}
+      description={sections.data.description}
+      accent="da"
+      projects={dataProjects}
+    />
+  </div>
+
+  <Contact />
+</BaseLayout>
+
+<style>
+  .band {
+    position: relative;
+    background: var(--bg-soft);
+    border-block: 1px solid var(--border);
+  }
+
+  .band::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    background: var(--gradient-da);
+    opacity: 0.55;
+  }
+</style>

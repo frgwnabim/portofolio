@@ -1,0 +1,22 @@
+{
+  "name": "portofolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portofolio Software Engineering & Data Analytics",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "zip": "npm run build && cd dist && zip -r ../portfolio-dist.zip . -x '.DS_Store' && cd .."
+  },
+  "dependencies": {
+    "astro": "^7.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,164 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="section" id="tentang">
+  <div class="container about-grid">
+    <div class="about-copy reveal">
+      <span class="eyebrow">Tentang saya</span>
+      <h2>Dua peran, satu cara kerja: rapi dari awal.</h2>
+      {site.about.map((paragraph) => <p>{paragraph}</p>)}
+
+      <div class="quote">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M7.5 6C5 6 3 8 3 10.5S5 15 7.5 15c.4 0 .8 0 1.1-.1-.6 1.8-2 3-3.8 3.4l.6 1.7c3.4-.8 5.9-3.9 5.9-7.7V10.5C11.3 8 9.5 6 7.5 6zm10 0C15 6 13 8 13 10.5S15 15 17.5 15c.4 0 .8 0 1.1-.1-.6 1.8-2 3-3.8 3.4l.6 1.7c3.4-.8 5.9-3.9 5.9-7.7V10.5C21.3 8 19.5 6 17.5 6z" />
+        </svg>
+        <p>Kode yang baik itu yang gampang dibaca orang lain enam bulan kemudian, termasuk oleh diri saya sendiri.</p>
+      </div>
+    </div>
+
+    <div class="skills reveal" style="--reveal-delay:120ms">
+      {
+        site.skills.map((group) => (
+          <div class="skill-card" data-accent={group.accent}>
+            <div class="skill-head">
+              <span class="skill-icon" aria-hidden="true">
+                {group.accent === 'se' ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m8 17-5-5 5-5M16 7l5 5-5 5M13.5 4l-3 16" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18" />
+                    <path d="M7 15v3M12 10v8M17 6v12" />
+                  </svg>
+                )}
+              </span>
+              <h3>{group.group}</h3>
+            </div>
+            <ul>
+              {group.items.map((item) => (
+                <li class="tag">{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    gap: clamp(2rem, 4.5vw, 3.5rem);
+    align-items: start;
+  }
+
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 36rem;
+  }
+
+  .about-copy h2 {
+    font-size: clamp(1.75rem, 1.3rem + 1.9vw, 2.5rem);
+    margin-bottom: 0.25rem;
+  }
+
+  .about-copy p {
+    color: var(--ink-2);
+  }
+
+  .quote {
+    display: flex;
+    gap: 0.85rem;
+    margin-top: 0.6rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    border-image: var(--gradient-brand) 1;
+    border-image-slice: 0 0 0 1;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .quote svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: none;
+    color: var(--brand);
+    opacity: 0.5;
+  }
+
+  .quote p {
+    font-size: 0.97rem;
+    font-style: italic;
+    color: var(--ink-2);
+  }
+
+  .skills {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .skill-card {
+    --chip: var(--gradient-se);
+    padding: 1.35rem 1.4rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .skill-card[data-accent='da'] {
+    --chip: var(--gradient-da);
+  }
+
+  .skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .skill-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .skill-icon {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex: none;
+    border-radius: 12px;
+    background: var(--chip);
+    color: #fff;
+  }
+
+  .skill-icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .skill-head h3 {
+    font-size: 1.05rem;
+  }
+
+  .skill-card ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+  }
+
+  @media (min-width: 900px) {
+    .about-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    }
+  }
+</style>

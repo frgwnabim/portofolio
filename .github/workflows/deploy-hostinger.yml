@@ -1,0 +1,71 @@
+# =============================================================================
+# Deploy otomatis ke Hostinger lewat FTP
+# -----------------------------------------------------------------------------
+# Workflow ini akan build website lalu upload isi folder dist/ ke Hostinger
+# setiap kali kamu push ke branch main.
+#
+# Supaya jalan, tambahkan 3 secret di GitHub:
+#   Settings > Secrets and variables > Actions > New repository secret
+#     FTP_SERVER    contoh: ftp.namadomainkamu.com  (lihat hPanel > Files > FTP Accounts)
+#     FTP_USERNAME  contoh: u123456789.namadomainkamu.com
+#     FTP_PASSWORD  password akun FTP kamu
+#
+# Selama secret belum diisi, tahap upload otomatis dilewati (tidak error).
+# =============================================================================
+name: Deploy ke Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+
+      - name: Siapkan Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependency
+        run: npm ci
+
+      - name: Build website
+        run: npm run build
+
+      - name: Cek kredensial FTP
+        id: kredensial
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -z "$FTP_SERVER" ]; then
+            echo "tersedia=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Secret FTP belum diisi, tahap upload dilewati."
+          else
+            echo "tersedia=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload ke Hostinger
+        if: steps.kredensial.outputs.tersedia == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          # Sesuaikan kalau akun FTP kamu sudah langsung masuk ke folder domain.
+          # Cek lewat FileZilla: kalau setelah login sudah di dalam public_html,
+          # ganti baris di bawah menjadi: server-dir: ./
+          server-dir: ./public_html/
+          dangerous-clean-slate: false
