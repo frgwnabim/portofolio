@@ -7,23 +7,23 @@
 
 export const site = {
   /** Nama yang tampil di header, hero, dan footer. */
-  name: 'Fergiawan Abim',
+  name: 'Fergiawan Abimanyu',
   /** Inisial untuk logo. Maksimal 2 huruf. */
   initials: 'FA',
   /** Peran singkat, tampil di bawah nama pada header dan di meta title. */
   role: 'Software Engineer & Data Analyst',
   /** Domain final di Hostinger. Dipakai untuk canonical URL dan Open Graph. */
-  url: 'https://namadomainkamu.com',
+  url: 'https://frgwnabim.site',
   /** Lokasi, tampil di hero. Kosongkan ('') kalau tidak mau ditampilkan. */
-  location: 'Indonesia',
+  location: 'Jakarta Barat, DKI Jakarta,Indonesia',
   /** Status ketersediaan di badge hero. Kosongkan ('') untuk menyembunyikan badge. */
-  availability: 'Terbuka untuk peluang & kolaborasi',
+  availability: '',
   /** Alamat email untuk tombol kontak. */
   email: 'fergiawanabim@gmail.com',
 
   /** Judul & deskripsi untuk SEO / preview waktu link dibagikan. */
   seo: {
-    title: 'Fergiawan Abim | Software Engineer & Data Analyst',
+    title: 'Fergiawan Abimanyu | Software Engineer & Data Analyst',
     description:
       'Portofolio project software engineering dan data analytics: aplikasi web, API, dashboard, dan analisis data end-to-end.',
     /** Gambar preview saat link dibagikan (taruh di folder public/). */
@@ -53,7 +53,7 @@ export const site = {
   /** Tautan sosial. Kosongkan url ('') untuk menyembunyikan salah satu. */
   socials: {
     github: 'https://github.com/frgwnabim',
-    linkedin: 'https://www.linkedin.com/in/',
+    linkedin: 'https://www.linkedin.com/in/fergiawan-abimanyu-502046267/',
     instagram: '',
     /** File CV di folder public/, contoh '/cv-fergiawan-abim.pdf'. Kosongkan kalau belum ada. */
     resume: '',
@@ -70,7 +70,6 @@ export const site = {
         'React',
         'Next.js',
         'Node.js',
-        'Express',
         'PostgreSQL',
         'REST API',
         'Git',
@@ -87,7 +86,6 @@ export const site = {
         'SQL',
         'scikit-learn',
         'Power BI',
-        'Looker Studio',
         'Matplotlib',
         'Excel',
         'ETL',
@@ -99,7 +97,8 @@ export const site = {
   contact: {
     title: 'Mari bikin sesuatu bersama',
     description:
-      'Punya project, tawaran kerja, atau sekadar mau diskusi soal kode dan data? Kirim pesan, biasanya saya balas dalam 1 sampai 2 hari kerja.',
+      // 'Punya project, tawaran kerja, atau sekadar mau diskusi soal kode dan data? Kirim pesan, biasanya saya balas dalam 1 sampai 2 hari kerja.',
+      '',
   },
 };
 

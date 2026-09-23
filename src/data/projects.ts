@@ -46,15 +46,15 @@ export const PROJECTS_VISIBLE = 5;
 ----------------------------------------------------------------------------- */
 export const softwareProjects: Project[] = [
   {
-    title: 'Contoh: Sistem Manajemen Inventori',
+    title: 'Banijya Shop - Ecommerce',
     description:
-      'Aplikasi web untuk pencatatan stok gudang dengan role-based access, notifikasi stok minimum, dan laporan otomatis.',
-    link: 'https://contoh-inventori.vercel.app',
-    tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma'],
-    repo: 'https://github.com/frgwnabim',
-    year: '2025',
+      'Aplikasi web untuk transaksi online dengan fitur keranjang belanja, pembayaran, dan manajemen produk.',
+    link: 'https://web-production-5f7507.up.railway.app/',
+    tags: ['PHP', 'Laravel', 'PostgreSQL', 'Bootstrap'],
+    repo: 'https://github.com/frgwnabim/banijya_shop',
+    year: '2026',
     status: 'live',
-    highlight: 'Proses stok 3x lebih cepat',
+    highlight: '',
   },
   {
     title: 'Contoh: REST API Layanan Booking',
