@@ -1,16 +1,14 @@
 # =============================================================================
-# Deploy otomatis ke Hostinger lewat FTP
+# Build website lalu kirim hasilnya ke branch `deploy`
 # -----------------------------------------------------------------------------
-# Workflow ini akan build website lalu upload isi folder dist/ ke Hostinger
-# setiap kali kamu push ke branch main.
+# Fitur Git bawaan Hostinger (hPanel > Advanced > GIT) hanya meng-clone repo,
+# tidak menjalankan `npm run build`. Workflow ini yang melakukan build, lalu
+# menaruh isi folder dist/ di root branch `deploy`.
 #
-# Supaya jalan, tambahkan 3 secret di GitHub:
-#   Settings > Secrets and variables > Actions > New repository secret
-#     FTP_SERVER    contoh: ftp.namadomainkamu.com  (lihat hPanel > Files > FTP Accounts)
-#     FTP_USERNAME  contoh: u123456789.namadomainkamu.com
-#     FTP_PASSWORD  password akun FTP kamu
+# Di hPanel, arahkan auto deploy Git ke branch `deploy` (bukan `main`),
+# sehingga yang masuk ke public_html adalah website jadi (ada index.html).
 #
-# Selama secret belum diisi, tahap upload otomatis dilewati (tidak error).
+# Tidak perlu secret apa pun, cukup token bawaan GitHub Actions.
 # =============================================================================
 name: Deploy ke Hostinger
 
@@ -18,6 +16,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 concurrency:
   group: deploy-hostinger
@@ -43,29 +44,14 @@ jobs:
       - name: Build website
         run: npm run build
 
-      - name: Cek kredensial FTP
-        id: kredensial
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-        run: |
-          if [ -z "$FTP_SERVER" ]; then
-            echo "tersedia=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Secret FTP belum diisi, tahap upload dilewati."
-          else
-            echo "tersedia=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Upload ke Hostinger
-        if: steps.kredensial.outputs.tersedia == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Push hasil build ke branch deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/
-          # Sesuaikan kalau akun FTP kamu sudah langsung masuk ke folder domain.
-          # Cek lewat FileZilla: kalau setelah login sudah di dalam public_html,
-          # ganti baris di bawah menjadi: server-dir: ./
-          server-dir: ./public_html/
-          dangerous-clean-slate: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: deploy
+          # Branch deploy selalu berisi 1 commit terbaru saja, supaya ringan
+          force_orphan: true
+          # Jangan tambahkan file .nojekyll (khusus GitHub Pages, tidak perlu di Hostinger)
+          enable_jekyll: true
+          commit_message: 'Deploy dari ${{ github.sha }}'

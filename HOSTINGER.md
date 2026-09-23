@@ -143,53 +143,73 @@ Lebih cepat untuk update rutin karena hanya file yang berubah yang diupload.
 
 ---
 
-## Cara 3. Deploy otomatis lewat GitHub Actions (paling nyaman jangka panjang)
+## Cara 3. Deploy otomatis: GitHub Actions + fitur Git Hostinger (paling nyaman jangka panjang)
 
 Setelah setup sekali, alur kerjamu jadi: edit `projects.ts` > `git push` > website
-otomatis ter-update dalam 1 sampai 2 menit. Tidak perlu build manual, tidak perlu upload.
+otomatis ter-update dalam beberapa menit. Tidak perlu build manual, tidak perlu upload,
+dan tidak perlu password FTP.
+
+### Kenapa tidak langsung auto deploy dari `main`?
+
+Fitur **Advanced > GIT** di hPanel hanya meng-clone isi repository ke `public_html`.
+**Hostinger tidak menjalankan `npm run build`**, jadi kalau diarahkan ke `main`, yang
+tersalin hanyalah kode sumber (`src/`, `package.json`, dan seterusnya) tanpa `index.html`.
+Hasilnya website menampilkan **403 Forbidden**.
+
+Solusinya: workflow `.github/workflows/deploy-hostinger.yml` melakukan build setiap kali
+ada push ke `main`, lalu menaruh isi folder `dist/` di branch khusus bernama `deploy`.
+Hostinger cukup menarik branch `deploy` itu.
+
+```
+push ke main  ->  GitHub Actions build  ->  branch deploy (isi dist/)  ->  Hostinger pull ke public_html
+```
 
 ### Setup
 
 1. Push project ini ke GitHub (repo `frgwnabim/portofolio`).
-2. Ambil data FTP seperti pada Cara 2.
-3. Di GitHub, buka repo kamu lalu:
-   **Settings > Secrets and variables > Actions > New repository secret**.
-4. Tambahkan tiga secret berikut, satu per satu:
+2. Tunggu workflow **Deploy ke Hostinger** selesai di tab **Actions** (centang hijau).
+   Setelah itu akan muncul branch baru bernama `deploy`. Kalau belum ada push baru,
+   jalankan manual: tab **Actions > Deploy ke Hostinger > Run workflow**.
+3. Pastikan GitHub Actions boleh push ke repo:
+   **Settings > Actions > General > Workflow permissions**, pilih
+   **Read and write permissions**, lalu **Save**.
+4. Di hPanel, buka **Advanced > GIT**.
+   - Kalau sudah ada repository yang terhubung ke branch `main`, hapus dulu.
+   - Kosongkan folder `public_html` lewat File Manager (Hostinger mensyaratkan folder
+     tujuan kosong waktu pertama kali deploy). Jangan lupa backup dulu kalau perlu.
+5. Tambahkan repository baru:
 
-   | Nama secret | Isi |
+   | Kolom | Isi |
    | --- | --- |
-   | `FTP_SERVER` | FTP hostname dari hPanel, contoh `ftp.namadomainkamu.com` |
-   | `FTP_USERNAME` | FTP username dari hPanel |
-   | `FTP_PASSWORD` | password akun FTP |
+   | Repository | `https://github.com/frgwnabim/portofolio.git` |
+   | Branch | `deploy` |
+   | Directory | kosongkan (artinya langsung ke `public_html`) |
 
-5. Selesai. Setiap push ke branch `main`, file `.github/workflows/deploy-hostinger.yml`
-   akan build dan upload otomatis.
+   Kalau repository kamu private, tambahkan dulu SSH key dari hPanel ke
+   GitHub (**Settings > Deploy keys**) dan pakai alamat `git@github.com:frgwnabim/portofolio.git`.
+6. Klik **Create**, lalu klik **Deploy** sekali.
+7. Aktifkan **Auto Deployment**. hPanel akan memberi **Webhook URL**. Salin, lalu di GitHub
+   buka **Settings > Webhooks > Add webhook**, tempel di kolom **Payload URL**, pilih
+   **Just the push event**, lalu **Add webhook**.
+
+Selesai. Setiap workflow mendorong commit baru ke branch `deploy`, webhook memberi tahu
+Hostinger untuk menarik versi terbaru.
 
 ### Cek hasilnya
 
-Buka tab **Actions** di repo GitHub kamu. Kalau ada tanda centang hijau, berarti
-website sudah ter-update.
+- Tab **Actions** di GitHub harus centang hijau.
+- Di File Manager, `public_html` harus berisi `index.html`, `404.html`, `_astro/`,
+  dan `.htaccess` langsung di dalamnya.
 
-### Kalau upload gagal
+### Kalau gagal
 
-Buka log di tab Actions. Masalah yang paling sering:
-
-- **Folder tujuan salah.** Sebagian akun FTP Hostinger langsung mendarat di dalam
-  folder domain. Cek pakai FileZilla: kalau setelah login kamu sudah berada di dalam
-  `public_html`, ubah baris `server-dir: ./public_html/` di file workflow menjadi
-  `server-dir: ./`.
-- **Login ditolak.** Pastikan ketiga secret tidak ada spasi berlebih di awal atau akhir.
-
----
-
-## Alternatif: fitur Git bawaan Hostinger
-
-hPanel punya menu **Advanced > GIT** yang bisa menarik repository langsung ke server.
-**Tapi Hostinger tidak menjalankan `npm run build`**, jadi yang tersalin hanyalah kode
-sumber, bukan website jadinya. Kalau tetap mau pakai cara ini, kamu harus commit folder
-`dist/` ke repository (hapus baris `dist/` dari `.gitignore`).
-
-Untuk kebanyakan orang, **Cara 3 lebih rapi** karena repository tetap bersih.
+- **Workflow gagal di langkah "Push hasil build ke branch deploy"** dengan error 403:
+  ulangi langkah 3 (Workflow permissions harus Read and write).
+- **Website masih 403**: cek apakah branch di hPanel sudah `deploy`, bukan `main`.
+  Kalau di `public_html` masih ada `src/` atau `package.json`, berarti yang ter-deploy
+  masih branch `main`.
+- **Update tidak muncul**: cek webhook di GitHub (**Settings > Webhooks**), klik webhook-nya
+  dan lihat tab **Recent Deliveries**. Bisa juga klik **Deploy** manual di hPanel.
 
 ---
 
@@ -217,7 +237,7 @@ Hostinger memakai LiteSpeed Cache. Kalau perubahan belum kelihatan:
 | --- | --- |
 | Muncul halaman "Index of /" atau daftar file | File `index.html` tidak ada di `public_html`. Kemungkinan kamu mengupload folder `dist`-nya, bukan isinya. Pindahkan semua file dari `public_html/dist/` ke `public_html/`. |
 | Website masih menampilkan halaman lama | Cache. Purge di **Cache Manager** lalu hard refresh browser. |
-| Error 403 Forbidden | Permission folder salah. Di File Manager, klik kanan `public_html` > **Permissions**, set folder ke `755` dan file ke `644`. |
+| Error 403 Forbidden | Kalau pakai fitur Git Hostinger: pastikan branch yang dipakai `deploy`, bukan `main` (lihat Cara 3). Selain itu bisa karena permission folder salah. Di File Manager, klik kanan `public_html` > **Permissions**, set folder ke `755` dan file ke `644`. |
 | Halaman tampil tapi tanpa warna dan tata letak | Folder `_astro` tidak ikut terupload. Upload ulang seluruh isi `dist/`. |
 | HTTPS belum aktif atau muncul peringatan "not secure" | SSL belum selesai dipasang. Cek **Security > SSL**, tunggu statusnya **Active**. |
 | Redirect berputar terus (`ERR_TOO_MANY_REDIRECTS`) | "Force HTTPS" di hPanel bentrok dengan aturan di `.htaccess`. Matikan salah satunya, cukup pakai yang di `.htaccess`. |
@@ -238,7 +258,7 @@ Setelah semua tersetup, menambah project baru cuma butuh ini:
 # 2. Cek dulu di lokal
 npm run dev
 
-# 3a. Kalau pakai GitHub Actions
+# 3a. Kalau pakai deploy otomatis (Cara 3)
 git add .
 git commit -m "tambah project X"
 git push

@@ -216,7 +216,7 @@ Ringkasnya ada tiga cara:
 
 1. **Upload manual lewat File Manager** (paling gampang, cocok untuk pertama kali)
 2. **FTP pakai FileZilla** (enak untuk update rutin)
-3. **Deploy otomatis lewat GitHub Actions** (sekali setup, selanjutnya tinggal `git push`)
+3. **Deploy otomatis lewat GitHub Actions + fitur Git Hostinger** (branch `deploy`, sekali setup, selanjutnya tinggal `git push`)
 
 ---
 
