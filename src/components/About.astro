@@ -5,16 +5,8 @@ import { site } from '../data/site';
 <section class="section" id="tentang">
   <div class="container about-grid">
     <div class="about-copy reveal">
-      <span class="eyebrow">Tentang saya</span>
-      <h2>Dua peran, satu cara kerja: rapi dari awal.</h2>
+      <h2>Tentang saya</h2>
       {site.about.map((paragraph) => <p>{paragraph}</p>)}
-
-      <div class="quote">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M7.5 6C5 6 3 8 3 10.5S5 15 7.5 15c.4 0 .8 0 1.1-.1-.6 1.8-2 3-3.8 3.4l.6 1.7c3.4-.8 5.9-3.9 5.9-7.7V10.5C11.3 8 9.5 6 7.5 6zm10 0C15 6 13 8 13 10.5S15 15 17.5 15c.4 0 .8 0 1.1-.1-.6 1.8-2 3-3.8 3.4l.6 1.7c3.4-.8 5.9-3.9 5.9-7.7V10.5C21.3 8 19.5 6 17.5 6z" />
-        </svg>
-        <p>Kode yang baik itu yang gampang dibaca orang lain enam bulan kemudian, termasuk oleh diri saya sendiri.</p>
-      </div>
     </div>
 
     <div class="skills reveal" style="--reveal-delay:120ms">
@@ -68,34 +60,6 @@ import { site } from '../data/site';
   }
 
   .about-copy p {
-    color: var(--ink-2);
-  }
-
-  .quote {
-    display: flex;
-    gap: 0.85rem;
-    margin-top: 0.6rem;
-    padding: 1.1rem 1.25rem;
-    border-radius: var(--radius);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid transparent;
-    border-image: var(--gradient-brand) 1;
-    border-image-slice: 0 0 0 1;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .quote svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    flex: none;
-    color: var(--brand);
-    opacity: 0.5;
-  }
-
-  .quote p {
-    font-size: 0.97rem;
-    font-style: italic;
     color: var(--ink-2);
   }
 

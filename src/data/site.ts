@@ -15,7 +15,7 @@ export const site = {
   /** Domain final di Hostinger. Dipakai untuk canonical URL dan Open Graph. */
   url: 'https://frgwnabim.site',
   /** Lokasi, tampil di hero. Kosongkan ('') kalau tidak mau ditampilkan. */
-  location: 'Jakarta Barat, DKI Jakarta,Indonesia',
+  location: 'Jakarta, Indonesia',
   /** Status ketersediaan di badge hero. Kosongkan ('') untuk menyembunyikan badge. */
   availability: '',
   /** Alamat email untuk tombol kontak. */
@@ -32,21 +32,18 @@ export const site = {
 
   /** Teks besar di hero. Kata di dalam tanda {} akan diberi warna gradient. */
   hero: {
-    headline: 'Membangun {perangkat lunak} yang rapi dan {analisis data} yang berguna.',
-    subheadline:
-      'Saya mengerjakan dua hal yang saling melengkapi: merancang aplikasi yang stabil dan enak dipakai, lalu menggali data di baliknya menjadi keputusan yang bisa ditindaklanjuti.',
+    headline: '{Software Engineer} & {Data Analyst}',
+    subheadline: 'Membangun aplikasi web dan mengolah data menjadi insight.',
   },
 
   /** Paragraf pada bagian "Tentang Saya". Tambah/kurangi baris sesukanya. */
   about: [
-    'Halo, saya Fergiawan. Saya menulis kode untuk menyelesaikan masalah nyata, bukan sekadar menambah fitur. Fokus saya ada pada aplikasi web modern: arsitektur yang jelas, kode yang gampang dirawat, dan pengalaman pengguna yang terasa ringan.',
-    'Di sisi lain, saya senang mengolah data mentah yang berantakan menjadi cerita yang mudah dipahami. Mulai dari membersihkan data, membangun pipeline, sampai menyusun dashboard dan model yang dipakai untuk mengambil keputusan.',
+    'Saya Fergiawan, software engineer dan data analyst. Saya membangun aplikasi web end-to-end serta menganalisis data menjadi dashboard dan laporan untuk pengambilan keputusan.',
   ],
 
   /** Angka singkat di bawah hero. Hapus item yang tidak perlu. */
   stats: [
     { value: '10+', label: 'Project selesai' },
-    { value: '2', label: 'Bidang keahlian' },
     { value: '15+', label: 'Tools & teknologi' },
   ],
 
@@ -95,7 +92,7 @@ export const site = {
 
   /** Isi bagian kontak di bagian bawah halaman. */
   contact: {
-    title: 'Mari bikin sesuatu bersama',
+    title: 'Hubungi saya',
     description:
       // 'Punya project, tawaran kerja, atau sekadar mau diskusi soal kode dan data? Kirim pesan, biasanya saya balas dalam 1 sampai 2 hari kerja.',
       '',
@@ -114,16 +111,14 @@ export const navLinks = [
 export const sections = {
   software: {
     id: 'software-engineering',
-    eyebrow: 'Bagian 01',
+    eyebrow: '',
     title: 'Software Engineering',
-    description:
-      'Aplikasi web, API, dan tooling yang saya rancang dari nol sampai rilis. Klik kartunya untuk membuka demo langsung.',
+    description: '',
   },
   data: {
     id: 'data-analytics',
-    eyebrow: 'Bagian 02',
+    eyebrow: '',
     title: 'Data Analytics',
-    description:
-      'Analisis, dashboard, dan model prediktif dari data nyata. Klik kartunya untuk melihat hasil dan visualisasinya.',
+    description: '',
   },
 };

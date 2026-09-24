@@ -20,9 +20,9 @@ const gridId = `grid-${id}`;
 <section class="section project-section" id={id} data-accent={accent}>
   <div class="container">
     <header class="section-head reveal">
-      <span class="eyebrow">{eyebrow}</span>
+      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
       <h2>{title}</h2>
-      <p>{description}</p>
+      {description && <p>{description}</p>}
       <span class="count">
         {projects.length} project
       </span>
