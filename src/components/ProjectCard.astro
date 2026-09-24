@@ -306,6 +306,10 @@ const isExternal = /^https?:\/\//.test(project.link);
     font-weight: 700;
   }
 
+  :global(:root[data-theme='dark']) .project-card[data-accent='se'] .highlight {
+    background: var(--brand-soft);
+  }
+
   h3 {
     font-size: 1.12rem;
     line-height: 1.32;

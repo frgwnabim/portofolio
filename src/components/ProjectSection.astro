@@ -21,11 +21,25 @@ const gridId = `grid-${id}`;
   <div class="container">
     <header class="section-head reveal">
       {eyebrow && <span class="eyebrow">{eyebrow}</span>}
-      <h2>{title}</h2>
+      <div class="section-title" data-accent={accent}>
+        <span class="section-icon" aria-hidden="true">
+          {accent === 'se' ? (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m8 17-5-5 5-5M16 7l5 5-5 5M13.5 4l-3 16" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18" />
+              <path d="M7 15v3M12 10v8M17 6v12" />
+            </svg>
+          )}
+        </span>
+        <div>
+          <h2>{title}</h2>
+          <span class="count">{projects.length} project</span>
+        </div>
+      </div>
       {description && <p>{description}</p>}
-      <span class="count">
-        {projects.length} project
-      </span>
     </header>
 
     {
@@ -79,13 +93,10 @@ const gridId = `grid-${id}`;
   }
 
   .count {
-    align-self: flex-start;
-    padding: 0.26rem 0.7rem;
-    border-radius: 999px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    font-size: 0.76rem;
-    font-weight: 700;
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.85rem;
+    font-weight: 600;
     color: var(--ink-3);
   }
 

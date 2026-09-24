@@ -10,7 +10,10 @@ import { softwareProjects, dataProjects } from '../data/projects';
 
 <BaseLayout>
   <Hero />
-  <About />
+
+  <div class="band">
+    <About />
+  </div>
 
   <!-- Bagian 01: Software Engineering -->
   <ProjectSection
@@ -22,7 +25,7 @@ import { softwareProjects, dataProjects } from '../data/projects';
     projects={softwareProjects}
   />
 
-  <!-- Bagian 02: Data Analytics, diberi latar berbeda supaya pemisahannya jelas -->
+  <!-- Bagian 02: Data Analytics, latar selang-seling supaya pemisahannya jelas -->
   <div class="band">
     <ProjectSection
       id={sections.data.id}
@@ -37,20 +40,3 @@ import { softwareProjects, dataProjects } from '../data/projects';
   <Contact />
 </BaseLayout>
 
-<style>
-  .band {
-    position: relative;
-    background: var(--bg-soft);
-    border-block: 1px solid var(--border);
-  }
-
-  .band::before {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    height: 2px;
-    background: var(--gradient-da);
-    opacity: 0.55;
-  }
-</style>

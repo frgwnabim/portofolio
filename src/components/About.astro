@@ -5,7 +5,15 @@ import { site } from '../data/site';
 <section class="section" id="tentang">
   <div class="container about-grid">
     <div class="about-copy reveal">
-      <h2>Tentang saya</h2>
+      <div class="section-title">
+        <span class="section-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21a8 8 0 0 1 16 0" />
+          </svg>
+        </span>
+        <h2>Tentang saya</h2>
+      </div>
       {site.about.map((paragraph) => <p>{paragraph}</p>)}
     </div>
 
@@ -54,9 +62,8 @@ import { site } from '../data/site';
     max-width: 36rem;
   }
 
-  .about-copy h2 {
-    font-size: clamp(1.75rem, 1.3rem + 1.9vw, 2.5rem);
-    margin-bottom: 0.25rem;
+  .about-copy .section-title {
+    margin-bottom: 0.4rem;
   }
 
   .about-copy p {

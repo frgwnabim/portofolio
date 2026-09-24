@@ -392,6 +392,49 @@ p {
   font-size: 1.03rem;
 }
 
+/* Judul section: ikon berwarna + judul, supaya tiap bagian mudah dikenali */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.section-icon {
+  display: grid;
+  place-items: center;
+  width: clamp(2.75rem, 2.4rem + 1.2vw, 3.25rem);
+  height: clamp(2.75rem, 2.4rem + 1.2vw, 3.25rem);
+  flex: none;
+  border-radius: 14px;
+  background: var(--icon-bg, var(--gradient-brand));
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-icon svg {
+  width: 55%;
+  height: 55%;
+}
+
+.section-title[data-accent='se'] {
+  --icon-bg: var(--gradient-se);
+}
+
+.section-title[data-accent='da'] {
+  --icon-bg: var(--gradient-da);
+}
+
+.section-title h2 {
+  font-size: clamp(1.9rem, 1.35rem + 2.3vw, 2.85rem);
+}
+
+/* Latar selang-seling antar section */
+.band {
+  position: relative;
+  background: var(--bg-soft);
+  border-block: 1px solid var(--border);
+}
+
 /* ---------- 6. ANIMASI MASUK ---------------------------------------------- */
 .reveal {
   opacity: 0;
