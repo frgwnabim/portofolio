@@ -54,54 +54,16 @@ export const softwareProjects: Project[] = [
     repo: 'https://github.com/frgwnabim/banijya_shop',
     year: '2026',
     status: 'live',
-    highlight: '',
   },
   {
-    title: 'Contoh: REST API Layanan Booking',
+    title: 'Noisecore',
     description:
-      'Backend service untuk reservasi dengan autentikasi JWT, rate limiting, dan dokumentasi OpenAPI yang siap dipakai tim frontend.',
-    link: 'https://contoh-booking-api.vercel.app',
-    tags: ['Node.js', 'Express', 'Redis', 'Docker'],
-    repo: 'https://github.com/frgwnabim',
+      'Website pembelian Noisecore secara online.',
+    link: 'https://noisecore.vercel.app/',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    repo: 'https://github.com/frgwnabim/noisecore-project',
     year: '2025',
     status: 'live',
-    highlight: '120ms rata-rata respons',
-  },
-  {
-    title: 'Contoh: Aplikasi Catatan Realtime',
-    description:
-      'Editor kolaboratif multi-user dengan sinkronisasi realtime, mode offline, dan riwayat versi tiap dokumen.',
-    link: 'https://contoh-notes.vercel.app',
-    tags: ['React', 'Supabase', 'WebSocket', 'Tailwind'],
-    year: '2024',
-    status: 'live',
-  },
-  {
-    title: 'Contoh: Dashboard Admin E-Commerce',
-    description:
-      'Panel admin untuk kelola produk, pesanan, dan pengguna lengkap dengan grafik penjualan serta ekspor data.',
-    link: 'https://contoh-admin.vercel.app',
-    tags: ['Vue 3', 'Pinia', 'Chart.js', 'Firebase'],
-    year: '2024',
-    status: 'live',
-  },
-  {
-    title: 'Contoh: URL Shortener + Analitik',
-    description:
-      'Layanan pemendek tautan dengan custom slug, QR code otomatis, dan statistik klik per wilayah dan perangkat.',
-    link: 'https://contoh-shortener.vercel.app',
-    tags: ['Go', 'PostgreSQL', 'HTMX'],
-    year: '2024',
-    status: 'live',
-  },
-  {
-    title: 'Contoh: CLI Generator Boilerplate',
-    description:
-      'Tool baris perintah untuk scaffolding project baru beserta konfigurasi linting, testing, dan CI/CD.',
-    link: 'https://contoh-cli.vercel.app',
-    tags: ['TypeScript', 'Node.js', 'GitHub Actions'],
-    year: '2023',
-    status: 'wip',
   },
 ];
 
@@ -110,18 +72,17 @@ export const softwareProjects: Project[] = [
 ----------------------------------------------------------------------------- */
 export const dataProjects: Project[] = [
   {
-    title: 'Contoh: Analisis Perilaku Pelanggan Retail',
+    title: 'TransJakarta Fleet Dashboard',
     description:
-      'Segmentasi pelanggan memakai RFM dan K-Means untuk menentukan prioritas kampanye promosi per kelompok.',
-    link: 'https://contoh-rfm.vercel.app',
-    tags: ['Python', 'Pandas', 'scikit-learn', 'Plotly'],
-    repo: 'https://github.com/frgwnabim',
+      'Membuat model yang menganalisis alokasi armada TransJakarta untuk meningkatkan efisiensi operasional.',
+    link: 'https://da-trans-jakarta-bus-allocated.vercel.app/',
+    tags: ['Python', 'PDI', 'PostgreSQL', 'Power BI'],
+    repo: 'https://github.com/frgwnabim/DA-TransJakarta_Bus_Allocated',
     year: '2025',
     status: 'live',
-    highlight: '5 segmen pelanggan',
   },
   {
-    title: 'Contoh: Dashboard Penjualan Interaktif',
+    title: 'zzzzzz',
     description:
       'Visualisasi tren penjualan multi-cabang dengan filter periode, drill-down kategori, dan perbandingan target.',
     link: 'https://contoh-sales-dashboard.vercel.app',
@@ -129,42 +90,5 @@ export const dataProjects: Project[] = [
     year: '2025',
     status: 'live',
     highlight: '18 KPI terpantau',
-  },
-  {
-    title: 'Contoh: Prediksi Churn Pelanggan',
-    description:
-      'Model klasifikasi untuk menandai pelanggan berisiko berhenti berlangganan beserta faktor pendorongnya.',
-    link: 'https://contoh-churn.vercel.app',
-    tags: ['Python', 'XGBoost', 'SHAP', 'Streamlit'],
-    year: '2024',
-    status: 'live',
-    highlight: 'ROC-AUC 0.91',
-  },
-  {
-    title: 'Contoh: Pipeline ETL Data Publik',
-    description:
-      'Otomatisasi pengambilan, pembersihan, dan pemuatan data terjadwal dari beberapa sumber terbuka ke warehouse.',
-    link: 'https://contoh-etl.vercel.app',
-    tags: ['Airflow', 'BigQuery', 'dbt'],
-    year: '2024',
-    status: 'live',
-  },
-  {
-    title: 'Contoh: Analisis Sentimen Ulasan Produk',
-    description:
-      'Klasifikasi sentimen ribuan ulasan marketplace plus ekstraksi topik keluhan yang paling sering muncul.',
-    link: 'https://contoh-sentimen.vercel.app',
-    tags: ['Python', 'NLTK', 'Transformers', 'Seaborn'],
-    year: '2024',
-    status: 'live',
-  },
-  {
-    title: 'Contoh: Laporan Kohort Retensi Pengguna',
-    description:
-      'Analisis kohort bulanan untuk melihat retensi pengguna aplikasi dan dampak tiap rilis fitur baru.',
-    link: 'https://contoh-kohort.vercel.app',
-    tags: ['SQL', 'Looker Studio', 'Google Sheets'],
-    year: '2023',
-    status: 'live',
   },
 ];
