@@ -52,6 +52,16 @@
   --gradient-se: linear-gradient(135deg, var(--blue-400), var(--blue-600));
   --gradient-da: linear-gradient(135deg, var(--teal-400), var(--blue-500));
 
+  /* Identitas tiap bagian: warna banner (solid, teks putih) + latar isi */
+  --part-about: linear-gradient(120deg, #17395f 0%, #1b4a86 100%);
+  --part-se: linear-gradient(120deg, #1a59a8 0%, #1e70d2 60%, #338eef 100%);
+  --part-da: linear-gradient(120deg, #0b6b66 0%, #0c857f 60%, #14a8a0 100%);
+  --part-contact: linear-gradient(120deg, #1e70d2 0%, #0c857f 100%);
+  --tint-about: #ffffff;
+  --tint-se: #e8f2ff;
+  --tint-da: #e4f7f4;
+  --tint-contact: #f3f8fd;
+
   /* Ukuran & bentuk */
   --radius-sm: 10px;
   --radius: 16px;
@@ -97,6 +107,15 @@
   --gradient-brand: linear-gradient(135deg, #8ac8ff 0%, #5daefb 45%, var(--teal-400) 100%);
   --gradient-se: linear-gradient(135deg, #8ac8ff, #3f8fe0);
   --gradient-da: linear-gradient(135deg, var(--teal-300), #5daefb);
+
+  --part-about: linear-gradient(120deg, #2b4c78 0%, #3a6397 100%);
+  --part-se: linear-gradient(120deg, #16498a 0%, #1e62b8 100%);
+  --part-da: linear-gradient(120deg, #075955 0%, #0b7a74 100%);
+  --part-contact: linear-gradient(120deg, #1a59a8 0%, #0b7a74 100%);
+  --tint-about: #0c1e33;
+  --tint-se: #0a1b33;
+  --tint-da: #07201f;
+  --tint-contact: #081524;
 
   color-scheme: dark;
 }
@@ -392,47 +411,32 @@ p {
   font-size: 1.03rem;
 }
 
-/* Judul section: ikon berwarna + judul, supaya tiap bagian mudah dikenali */
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
+/* Bagian (part): banner berwarna solid + isi dengan latar sendiri,
+   supaya jelas kapan pembaca pindah ke bagian lain. */
+.part {
+  --part-bg: var(--part-about);
+  --part-tint: var(--tint-about);
+  background: var(--part-tint);
+  scroll-margin-top: var(--header-h);
 }
 
-.section-icon {
-  display: grid;
-  place-items: center;
-  width: clamp(2.75rem, 2.4rem + 1.2vw, 3.25rem);
-  height: clamp(2.75rem, 2.4rem + 1.2vw, 3.25rem);
-  flex: none;
-  border-radius: 14px;
-  background: var(--icon-bg, var(--gradient-brand));
-  color: #fff;
-  box-shadow: var(--shadow-sm);
+.part[data-part='se'] {
+  --part-bg: var(--part-se);
+  --part-tint: var(--tint-se);
 }
 
-.section-icon svg {
-  width: 55%;
-  height: 55%;
+.part[data-part='da'] {
+  --part-bg: var(--part-da);
+  --part-tint: var(--tint-da);
 }
 
-.section-title[data-accent='se'] {
-  --icon-bg: var(--gradient-se);
+.part[data-part='contact'] {
+  --part-bg: var(--part-contact);
+  --part-tint: var(--tint-contact);
 }
 
-.section-title[data-accent='da'] {
-  --icon-bg: var(--gradient-da);
-}
-
-.section-title h2 {
-  font-size: clamp(1.9rem, 1.35rem + 2.3vw, 2.85rem);
-}
-
-/* Latar selang-seling antar section */
-.band {
-  position: relative;
-  background: var(--bg-soft);
-  border-block: 1px solid var(--border);
+.part-body {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3.5rem, 8vw, 6rem);
 }
 
 /* ---------- 6. ANIMASI MASUK ---------------------------------------------- */

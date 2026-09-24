@@ -11,13 +11,11 @@ import { softwareProjects, dataProjects } from '../data/projects';
 <BaseLayout>
   <Hero />
 
-  <div class="band">
-    <About />
-  </div>
+  <About />
 
-  <!-- Bagian 01: Software Engineering -->
   <ProjectSection
     id={sections.software.id}
+    number="02"
     eyebrow={sections.software.eyebrow}
     title={sections.software.title}
     description={sections.software.description}
@@ -25,17 +23,15 @@ import { softwareProjects, dataProjects } from '../data/projects';
     projects={softwareProjects}
   />
 
-  <!-- Bagian 02: Data Analytics, latar selang-seling supaya pemisahannya jelas -->
-  <div class="band">
-    <ProjectSection
-      id={sections.data.id}
-      eyebrow={sections.data.eyebrow}
-      title={sections.data.title}
-      description={sections.data.description}
-      accent="da"
-      projects={dataProjects}
-    />
-  </div>
+  <ProjectSection
+    id={sections.data.id}
+    number="03"
+    eyebrow={sections.data.eyebrow}
+    title={sections.data.title}
+    description={sections.data.description}
+    accent="da"
+    projects={dataProjects}
+  />
 
   <Contact />
 </BaseLayout>

@@ -1,9 +1,11 @@
 ---
 import ProjectCard from './ProjectCard.astro';
+import SectionBanner from './SectionBanner.astro';
 import { PROJECTS_VISIBLE, type Project } from '../data/projects';
 
 interface Props {
   id: string;
+  number: string;
   eyebrow: string;
   title: string;
   description: string;
@@ -11,36 +13,28 @@ interface Props {
   projects: Project[];
 }
 
-const { id, eyebrow, title, description, accent, projects } = Astro.props;
+const { id, number, eyebrow, title, description, accent, projects } = Astro.props;
 
 const hiddenCount = Math.max(projects.length - PROJECTS_VISIBLE, 0);
 const gridId = `grid-${id}`;
 ---
 
-<section class="section project-section" id={id} data-accent={accent}>
-  <div class="container">
-    <header class="section-head reveal">
-      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
-      <div class="section-title" data-accent={accent}>
-        <span class="section-icon" aria-hidden="true">
-          {accent === 'se' ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m8 17-5-5 5-5M16 7l5 5-5 5M13.5 4l-3 16" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 3v18h18" />
-              <path d="M7 15v3M12 10v8M17 6v12" />
-            </svg>
-          )}
-        </span>
-        <div>
-          <h2>{title}</h2>
-          <span class="count">{projects.length} project</span>
-        </div>
-      </div>
-      {description && <p>{description}</p>}
-    </header>
+<section class="part project-section" id={id} data-part={accent}>
+  <SectionBanner
+    number={number}
+    title={title}
+    subtitle={`${projects.length} project`}
+    icon={accent === 'se' ? 'code' : 'chart'}
+  />
+  <div class="container part-body">
+    {
+      (eyebrow || description) && (
+        <header class="section-head reveal">
+          {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+          {description && <p>{description}</p>}
+        </header>
+      )
+    }
 
     {
       projects.length === 0 ? (
@@ -84,22 +78,6 @@ const gridId = `grid-${id}`;
 </section>
 
 <style>
-  .project-section {
-    scroll-margin-top: calc(var(--header-h) + 1rem);
-  }
-
-  .section-head {
-    position: relative;
-  }
-
-  .count {
-    display: block;
-    margin-top: 0.15rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--ink-3);
-  }
-
   .grid {
     display: grid;
     gap: clamp(1rem, 2.2vw, 1.6rem);

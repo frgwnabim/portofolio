@@ -165,9 +165,22 @@ import { site, navLinks } from '../data/site';
     background: var(--brand-soft);
   }
 
+  /* Warna pill aktif mengikuti warna bagian yang sedang dibaca */
   .nav-desktop a.is-active {
     color: #fff;
-    background: var(--gradient-brand);
+    background: var(--part-about);
+  }
+
+  .nav-desktop a.is-active[href='#software-engineering'] {
+    background: var(--part-se);
+  }
+
+  .nav-desktop a.is-active[href='#data-analytics'] {
+    background: var(--part-da);
+  }
+
+  .nav-desktop a.is-active[href='#kontak'] {
+    background: var(--part-contact);
   }
 
   /* Aksi kanan */
