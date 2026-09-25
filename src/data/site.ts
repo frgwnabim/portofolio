@@ -104,10 +104,11 @@ export const navLinks = [
   { label: 'Tentang', href: '#tentang' },
   { label: 'Software Engineering', href: '#software-engineering' },
   { label: 'Data Analytics', href: '#data-analytics' },
+  { label: 'Sertifikat', href: '#sertifikat' },
   { label: 'Kontak', href: '#kontak' },
 ];
 
-/** Judul & deskripsi untuk dua section project. */
+/** Judul & deskripsi untuk section project dan sertifikat. */
 export const sections = {
   software: {
     id: 'software-engineering',
@@ -120,5 +121,10 @@ export const sections = {
     eyebrow: '',
     title: 'Data Analytics',
     description: '',
+  },
+  certificates: {
+    id: 'sertifikat',
+    title: 'Sertifikat',
+    description: 'Sertifikasi dan pelatihan yang sudah saya selesaikan.',
   },
 };

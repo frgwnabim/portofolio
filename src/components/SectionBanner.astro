@@ -3,7 +3,7 @@ interface Props {
   number: string;
   title: string;
   subtitle?: string;
-  icon: 'user' | 'code' | 'chart' | 'mail';
+  icon: 'user' | 'code' | 'chart' | 'mail' | 'award';
 }
 
 const { number, title, subtitle, icon } = Astro.props;
@@ -25,6 +25,12 @@ const { number, title, subtitle, icon } = Astro.props;
           <>
             <path d="M3 3v18h18" />
             <path d="M7 15v3M12 10v8M17 6v12" />
+          </>
+        )}
+        {icon === 'award' && (
+          <>
+            <circle cx="12" cy="9" r="6" />
+            <path d="m8.2 13.6-1.7 7.4 5.5-3 5.5 3-1.7-7.4" />
           </>
         )}
         {icon === 'mail' && (

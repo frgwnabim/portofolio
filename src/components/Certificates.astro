@@ -1,0 +1,92 @@
+---
+import SectionBanner from './SectionBanner.astro';
+import { sections } from '../data/site';
+import { certificates } from '../data/certificates';
+
+interface Props {
+  number: string;
+}
+
+const { number } = Astro.props;
+const count = certificates.length;
+const issuers = new Set(certificates.map((c) => c.issuer)).size;
+---
+
+<section class="part" data-part="cert" id={sections.certificates.id}>
+  <SectionBanner
+    number={number}
+    title={sections.certificates.title}
+    subtitle={count > 0 ? `${count} sertifikat` : 'Sertifikasi & pelatihan'}
+    icon="award"
+  />
+  <div class="container part-body">
+    <div class="cert-card reveal">
+      <div class="cert-copy">
+        <p class="cert-lead">{sections.certificates.description}</p>
+        {
+          count > 0 && (
+            <p class="cert-meta">
+              {count} sertifikat dari {issuers} penerbit
+            </p>
+          )
+        }
+      </div>
+
+      <a class="btn btn--primary" href="/sertifikat" target="_blank" rel="noopener">
+        Lihat semua sertifikat
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17 17 7M9 7h8v8" />
+        </svg>
+        <span class="sr-only">(buka di tab baru)</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cert-card {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  .cert-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(70% 140% at 100% 0%, var(--brand-soft), transparent 62%);
+    pointer-events: none;
+  }
+
+  .cert-copy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-width: 36rem;
+  }
+
+  .cert-lead {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .cert-meta {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  .cert-card .btn {
+    position: relative;
+  }
+</style>

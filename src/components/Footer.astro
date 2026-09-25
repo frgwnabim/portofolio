@@ -2,6 +2,7 @@
 import { site, navLinks } from '../data/site';
 
 const year = new Date().getFullYear();
+const base = /^\/(index(\.html)?)?$/.test(Astro.url.pathname) ? '' : '/';
 ---
 
 <footer class="site-footer">
@@ -15,7 +16,7 @@ const year = new Date().getFullYear();
     </div>
 
     <nav class="footer-nav" aria-label="Navigasi footer">
-      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      {navLinks.map((link) => <a href={base + link.href}>{link.label}</a>)}
     </nav>
 
     <p class="copyright">

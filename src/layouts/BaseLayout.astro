@@ -10,7 +10,11 @@ interface Props {
 }
 
 const { title = site.seo.title, description = site.seo.description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+// .htaccess membuang akhiran .html, jadi canonical ikut tanpa .html
+const canonical = new URL(
+  Astro.url.pathname.replace(/(index)?\.html$/, ''),
+  Astro.site ?? site.url
+).href;
 const ogImage = new URL(site.seo.ogImage, Astro.site ?? site.url).href;
 ---
 
@@ -128,7 +132,9 @@ const ogImage = new URL(site.seo.ogImage, Astro.site ?? site.url).href;
         document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')
       );
       const watched = navAnchors
-        .map((a) => document.querySelector<HTMLElement>(a.getAttribute('href') || ''))
+        .map((a) => a.getAttribute('href') || '')
+        .filter((href) => href.startsWith('#'))
+        .map((href) => document.querySelector<HTMLElement>(href))
         .filter((el): el is HTMLElement => Boolean(el));
 
       if (watched.length && 'IntersectionObserver' in window) {

@@ -1,10 +1,13 @@
 ---
 import { site, navLinks } from '../data/site';
+
+// Di halaman selain beranda, link #section harus diarahkan balik ke beranda
+const base = /^\/(index(\.html)?)?$/.test(Astro.url.pathname) ? '' : '/';
 ---
 
 <header class="site-header" id="site-header">
   <div class="container header-inner">
-    <a class="brand" href="#top" aria-label={`${site.name}, kembali ke atas`}>
+    <a class="brand" href={base ? '/' : '#top'} aria-label={`${site.name}, kembali ke atas`}>
       <span class="brand-mark" aria-hidden="true">{site.initials}</span>
       <span class="brand-text">
         <strong>{site.name}</strong>
@@ -15,7 +18,7 @@ import { site, navLinks } from '../data/site';
     <nav class="nav-desktop" aria-label="Navigasi utama">
       {
         navLinks.map((link) => (
-          <a href={link.href} data-nav-link>
+          <a href={base + link.href} data-nav-link>
             {link.label}
           </a>
         ))
@@ -39,7 +42,7 @@ import { site, navLinks } from '../data/site';
         </svg>
       </button>
 
-      <a class="btn btn--primary header-cta" href="#kontak">Hubungi saya</a>
+      <a class="btn btn--primary header-cta" href={`${base}#kontak`}>Hubungi saya</a>
 
       <button
         class="icon-btn nav-toggle"
@@ -57,8 +60,8 @@ import { site, navLinks } from '../data/site';
   </div>
 
   <nav class="nav-mobile" id="nav-mobile" aria-label="Navigasi mobile" hidden>
-    {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-    <a class="btn btn--primary" href="#kontak">Hubungi saya</a>
+    {navLinks.map((link) => <a href={base + link.href}>{link.label}</a>)}
+    <a class="btn btn--primary" href={`${base}#kontak`}>Hubungi saya</a>
   </nav>
 </header>
 
@@ -177,6 +180,10 @@ import { site, navLinks } from '../data/site';
 
   .nav-desktop a.is-active[href='#data-analytics'] {
     background: var(--part-da);
+  }
+
+  .nav-desktop a.is-active[href='#sertifikat'] {
+    background: var(--part-cert);
   }
 
   .nav-desktop a.is-active[href='#kontak'] {

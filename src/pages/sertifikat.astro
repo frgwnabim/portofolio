@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionBanner from '../components/SectionBanner.astro';
+import { site, sections } from '../data/site';
+import { certificates, type Certificate } from '../data/certificates';
+
+const categoryLabel: Record<NonNullable<Certificate['category']>, string> = {
+  se: 'Software Engineering',
+  da: 'Data Analytics',
+  other: 'Lainnya',
+};
+
+// Filter hanya muncul kalau sertifikatnya berasal dari lebih dari satu kategori
+const categories = [...new Set(certificates.map((c) => c.category ?? 'other'))];
+const showFilter = categories.length > 1;
+
+// Inisial penerbit untuk kartu yang belum punya gambar
+const initialsOf = (text: string) =>
+  text
+    .split(/\s+/)
+    .filter((word) => /[a-z0-9]/i.test(word))
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase() ?? '')
+    .join('');
+---
+
+<BaseLayout
+  title={`Sertifikat | ${site.name}`}
+  description={`Daftar sertifikasi dan pelatihan ${site.name}.`}
+>
+  <section class="part" data-part="cert">
+    <SectionBanner
+      number="04"
+      title={sections.certificates.title}
+      subtitle={certificates.length > 0 ? `${certificates.length} sertifikat` : 'Sertifikasi & pelatihan'}
+      icon="award"
+    />
+
+    <div class="container part-body">
+      <div class="toolbar">
+        <a class="back" href="/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M11 18l-6-6 6-6" />
+          </svg>
+          Kembali ke beranda
+        </a>
+
+        {
+          showFilter && (
+            <div class="filters" role="group" aria-label="Filter kategori sertifikat">
+              <button type="button" class="chip" data-filter="all" aria-pressed="true">
+                Semua
+              </button>
+              {categories.map((cat) => (
+                <button type="button" class="chip" data-filter={cat} aria-pressed="false">
+                  {categoryLabel[cat]}
+                </button>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      {
+        certificates.length === 0 ? (
+          <p class="empty">
+            Belum ada sertifikat. Tambahkan lewat file <code>src/data/certificates.ts</code>.
+          </p>
+        ) : (
+          <ul class="cert-grid">
+            {certificates.map((cert) => {
+              const href = cert.link || cert.image;
+              const category = cert.category ?? 'other';
+              return (
+                <li class="cert" data-category={category}>
+                  <div class="thumb">
+                    {cert.image ? (
+                      <img src={cert.image} alt={`Sertifikat ${cert.title}`} loading="lazy" decoding="async" />
+                    ) : (
+                      <div class="thumb-fallback" aria-hidden="true">
+                        <span>{initialsOf(cert.issuer)}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div class="body">
+                    <div class="meta">
+                      <span class="issuer">{cert.issuer}</span>
+                      <span class="date">{cert.date}</span>
+                    </div>
+
+                    <h2>
+                      {href ? (
+                        <a href={href} target="_blank" rel="noopener noreferrer">
+                          {cert.title}
+                        </a>
+                      ) : (
+                        cert.title
+                      )}
+                    </h2>
+
+                    {cert.credentialId && <p class="cred">ID: {cert.credentialId}</p>}
+
+                    {cert.skills && cert.skills.length > 0 && (
+                      <ul class="tags">
+                        {cert.skills.slice(0, 4).map((skill) => (
+                          <li class="tag">{skill}</li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {href && (
+                      <span class="open" aria-hidden="true">
+                        Lihat sertifikat
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M7 17 17 7M9 7h8v8" />
+                        </svg>
+                      </span>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .part {
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    transition: color 0.2s var(--ease);
+  }
+
+  .back:hover {
+    color: var(--brand-strong);
+  }
+
+  .back svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .chip {
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s var(--ease), background-color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+
+  .chip:hover {
+    border-color: var(--brand);
+    color: var(--brand-strong);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: var(--part-cert);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .cert-grid {
+    display: grid;
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .cert-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .cert-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .cert {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+
+  .cert[hidden] {
+    display: none;
+  }
+
+  .cert:hover,
+  .cert:focus-within {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-strong);
+  }
+
+  .thumb {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--surface-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .cert:hover .thumb img {
+    transform: scale(1.04);
+  }
+
+  .thumb-fallback {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    background:
+      radial-gradient(70% 90% at 50% 0%, var(--brand-soft), transparent 70%),
+      var(--surface-muted);
+  }
+
+  .thumb-fallback span {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 20px;
+    background: var(--part-cert);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.6rem;
+    padding: 1.15rem 1.25rem 1.3rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .issuer {
+    font-weight: 700;
+    color: var(--brand-strong);
+  }
+
+  .date {
+    color: var(--ink-3);
+  }
+
+  .body h2 {
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .body h2 a {
+    color: var(--ink);
+  }
+
+  /* Seluruh kartu bisa diklik */
+  .body h2 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .body h2 a:focus-visible {
+    outline: none;
+  }
+
+  .cert:has(h2 a:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  .cred {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    overflow-wrap: anywhere;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .open {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--brand-strong);
+  }
+
+  .open svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    transition: transform 0.25s var(--ease);
+  }
+
+  .cert:hover .open svg {
+    transform: translate(2px, -2px);
+  }
+
+  .empty {
+    padding: 2rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    text-align: center;
+    color: var(--ink-3);
+  }
+
+  .empty code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--brand-strong);
+  }
+</style>
+
+<script>
+  /* Filter kategori sertifikat */
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.cert'));
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      cards.forEach((card) => {
+        card.hidden = filter !== 'all' && card.dataset.category !== filter;
+      });
+    });
+  });
+</script>

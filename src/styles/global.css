@@ -56,10 +56,12 @@
   --part-about: linear-gradient(120deg, #17395f 0%, #1b4a86 100%);
   --part-se: linear-gradient(120deg, #1a59a8 0%, #1e70d2 60%, #338eef 100%);
   --part-da: linear-gradient(120deg, #0b6b66 0%, #0c857f 60%, #14a8a0 100%);
+  --part-cert: linear-gradient(120deg, #312e81 0%, #4338ca 60%, #5b5fe0 100%);
   --part-contact: linear-gradient(120deg, #1e70d2 0%, #0c857f 100%);
   --tint-about: #ffffff;
   --tint-se: #e8f2ff;
   --tint-da: #e4f7f4;
+  --tint-cert: #eef0ff;
   --tint-contact: #f3f8fd;
 
   /* Ukuran & bentuk */
@@ -111,10 +113,12 @@
   --part-about: linear-gradient(120deg, #2b4c78 0%, #3a6397 100%);
   --part-se: linear-gradient(120deg, #16498a 0%, #1e62b8 100%);
   --part-da: linear-gradient(120deg, #075955 0%, #0b7a74 100%);
+  --part-cert: linear-gradient(120deg, #2e2a78 0%, #3f3ab0 100%);
   --part-contact: linear-gradient(120deg, #1a59a8 0%, #0b7a74 100%);
   --tint-about: #0c1e33;
   --tint-se: #0a1b33;
   --tint-da: #07201f;
+  --tint-cert: #0e1430;
   --tint-contact: #081524;
 
   color-scheme: dark;
@@ -428,6 +432,11 @@ p {
 .part[data-part='da'] {
   --part-bg: var(--part-da);
   --part-tint: var(--tint-da);
+}
+
+.part[data-part='cert'] {
+  --part-bg: var(--part-cert);
+  --part-tint: var(--tint-cert);
 }
 
 .part[data-part='contact'] {
