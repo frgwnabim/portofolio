@@ -398,6 +398,109 @@ const isExternal = /^https?:\/\//.test(project.link);
     height: 1.05rem;
   }
 
+  /* Versi ringkas untuk grid 2 kolom di layar kecil */
+  @media (max-width: 639px) {
+    .project-card {
+      border-radius: var(--radius);
+    }
+
+    .project-card:hover,
+    .project-card:focus-within {
+      transform: translateY(-3px);
+    }
+
+    .preview {
+      aspect-ratio: 4 / 3;
+    }
+
+    .preview-fallback .mock-bar,
+    .preview-fallback .mock-lines {
+      display: none;
+    }
+
+    .preview-fallback .initials {
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 13px;
+      font-size: 0.95rem;
+    }
+
+    .status {
+      top: 0.45rem;
+      right: 0.45rem;
+      padding: 0.14rem 0.45rem;
+      font-size: 0.6rem;
+    }
+
+    .body {
+      gap: 0.4rem;
+      padding: 0.75rem 0.8rem 0.85rem;
+    }
+
+    .meta {
+      gap: 0.3rem;
+      min-height: 0;
+    }
+
+    .year {
+      font-size: 0.66rem;
+    }
+
+    .highlight {
+      padding: 0.1rem 0.4rem;
+      font-size: 0.62rem;
+    }
+
+    h3 {
+      font-size: 0.92rem;
+    }
+
+    .desc {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .tags {
+      gap: 0.25rem;
+    }
+
+    .tags :global(.tag) {
+      padding: 0.16rem 0.45rem;
+      font-size: 0.64rem;
+    }
+
+    /* Maksimal 3 tag biar kartu kecil tidak penuh */
+    .tags li:nth-child(n + 4) {
+      display: none;
+    }
+
+    .actions {
+      gap: 0.4rem;
+      padding-top: 0.6rem;
+    }
+
+    .open {
+      font-size: 0.74rem;
+      gap: 0.2rem;
+    }
+
+    .repo {
+      width: 1.7rem;
+      height: 1.7rem;
+      border-radius: 8px;
+    }
+
+    .repo svg {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+  }
+
   /* Kartu unggulan: lebih lebar di layar besar */
   @media (min-width: 1000px) {
     .project-card.is-featured {

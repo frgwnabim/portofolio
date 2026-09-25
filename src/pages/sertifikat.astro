@@ -194,14 +194,8 @@ const initialsOf = (text: string) =>
 
   .cert-grid {
     display: grid;
-    gap: clamp(1rem, 2.2vw, 1.5rem);
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .cert-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    gap: clamp(0.75rem, 2.2vw, 1.5rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (min-width: 1000px) {
@@ -358,6 +352,51 @@ const initialsOf = (text: string) =>
 
   .cert:hover .open svg {
     transform: translate(2px, -2px);
+  }
+
+  /* Versi ringkas untuk grid 2 kolom di layar kecil */
+  @media (max-width: 639px) {
+    .cert {
+      border-radius: var(--radius);
+    }
+
+    .body {
+      gap: 0.4rem;
+      padding: 0.75rem 0.8rem 0.85rem;
+    }
+
+    .meta {
+      flex-direction: column;
+      font-size: 0.7rem;
+    }
+
+    .body h2 {
+      font-size: 0.9rem;
+    }
+
+    .cred {
+      font-size: 0.68rem;
+    }
+
+    .tags .tag {
+      padding: 0.16rem 0.45rem;
+      font-size: 0.64rem;
+    }
+
+    .tags li:nth-child(n + 3) {
+      display: none;
+    }
+
+    .open {
+      font-size: 0.74rem;
+    }
+
+    .thumb-fallback span {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 14px;
+      font-size: 1.05rem;
+    }
   }
 
   .empty {

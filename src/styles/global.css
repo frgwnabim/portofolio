@@ -52,17 +52,25 @@
   --gradient-se: linear-gradient(135deg, var(--blue-400), var(--blue-600));
   --gradient-da: linear-gradient(135deg, var(--teal-400), var(--blue-500));
 
-  /* Identitas tiap bagian: warna banner (solid, teks putih) + latar isi */
-  --part-about: linear-gradient(120deg, #17395f 0%, #1b4a86 100%);
-  --part-se: linear-gradient(120deg, #1a59a8 0%, #1e70d2 60%, #338eef 100%);
-  --part-da: linear-gradient(120deg, #0b6b66 0%, #0c857f 60%, #14a8a0 100%);
-  --part-cert: linear-gradient(120deg, #312e81 0%, #4338ca 60%, #5b5fe0 100%);
-  --part-contact: linear-gradient(120deg, #1e70d2 0%, #0c857f 100%);
-  --tint-about: #ffffff;
-  --tint-se: #e8f2ff;
-  --tint-da: #e4f7f4;
-  --tint-cert: #eef0ff;
-  --tint-contact: #f3f8fd;
+  /* Identitas tiap bagian: satu tangga warna berurutan dari atas ke bawah,
+     navy -> biru -> samudra -> teal -> teal gelap. Ujung gradasi tiap banner
+     mendekati awal banner berikutnya supaya perpindahannya mulus. */
+  --part-about: linear-gradient(120deg, #1a2f5c 0%, #22478c 100%);
+  --part-se: linear-gradient(120deg, #1f4c9c 0%, #2a6fd0 100%);
+  --part-da: linear-gradient(120deg, #1a639f 0%, #1690b0 100%);
+  --part-cert: linear-gradient(120deg, #117c93 0%, #14a098 100%);
+  --part-contact: linear-gradient(120deg, #0d6a74 0%, #0f8a7a 100%);
+  --tint-about: #f6f8fc;
+  --tint-se: #eef4fd;
+  --tint-da: #ebf5fa;
+  --tint-cert: #eaf6f6;
+  --tint-contact: #edf6f4;
+  /* Warna solid tiap bagian, dipakai untuk bayangan & dekorasi latar */
+  --dot-about: #22478c;
+  --dot-se: #2a6fd0;
+  --dot-da: #1690b0;
+  --dot-cert: #14a098;
+  --dot-contact: #0f8a7a;
 
   /* Ukuran & bentuk */
   --radius-sm: 10px;
@@ -110,16 +118,21 @@
   --gradient-se: linear-gradient(135deg, #8ac8ff, #3f8fe0);
   --gradient-da: linear-gradient(135deg, var(--teal-300), #5daefb);
 
-  --part-about: linear-gradient(120deg, #2b4c78 0%, #3a6397 100%);
-  --part-se: linear-gradient(120deg, #16498a 0%, #1e62b8 100%);
-  --part-da: linear-gradient(120deg, #075955 0%, #0b7a74 100%);
-  --part-cert: linear-gradient(120deg, #2e2a78 0%, #3f3ab0 100%);
-  --part-contact: linear-gradient(120deg, #1a59a8 0%, #0b7a74 100%);
-  --tint-about: #0c1e33;
-  --tint-se: #0a1b33;
-  --tint-da: #07201f;
-  --tint-cert: #0e1430;
-  --tint-contact: #081524;
+  --part-about: linear-gradient(120deg, #1b2f58 0%, #213f78 100%);
+  --part-se: linear-gradient(120deg, #1b4286 0%, #225cae 100%);
+  --part-da: linear-gradient(120deg, #164f82 0%, #12738f 100%);
+  --part-cert: linear-gradient(120deg, #0e6275 0%, #0f7d78 100%);
+  --part-contact: linear-gradient(120deg, #0a525b 0%, #0c6b62 100%);
+  --tint-about: #0b1628;
+  --tint-se: #0a1830;
+  --tint-da: #081b2a;
+  --tint-cert: #081e25;
+  --tint-contact: #071c1e;
+  --dot-about: #6f8fd0;
+  --dot-se: #6fa6ff;
+  --dot-da: #5cc2dd;
+  --dot-cert: #4fd1c5;
+  --dot-contact: #4cc7ae;
 
   color-scheme: dark;
 }
@@ -420,32 +433,65 @@ p {
 .part {
   --part-bg: var(--part-about);
   --part-tint: var(--tint-about);
+  --part-dot: var(--dot-about);
+  --part-shadow: 0 18px 40px -22px color-mix(in srgb, var(--part-dot) 75%, transparent);
+  position: relative;
+  isolation: isolate;
   background: var(--part-tint);
   scroll-margin-top: var(--header-h);
+}
+
+/* Latar bagian: titik halus + cahaya lembut di sisi kiri-kanan, jadi ruang
+   kosong di luar lebar konten (layar lebar) tetap terasa terisi. */
+.part::before,
+.part::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.part::before {
+  background-image: radial-gradient(var(--part-dot) 1.1px, transparent 1.1px);
+  background-size: 22px 22px;
+  opacity: 0.16;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 28%, transparent 72%, #000 100%);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 28%, transparent 72%, #000 100%);
+}
+
+.part::after {
+  background:
+    radial-gradient(40rem 26rem at 0% 20%, color-mix(in srgb, var(--part-dot) 12%, transparent), transparent 70%),
+    radial-gradient(40rem 26rem at 100% 85%, color-mix(in srgb, var(--part-dot) 10%, transparent), transparent 70%);
 }
 
 .part[data-part='se'] {
   --part-bg: var(--part-se);
   --part-tint: var(--tint-se);
+  --part-dot: var(--dot-se);
 }
 
 .part[data-part='da'] {
   --part-bg: var(--part-da);
   --part-tint: var(--tint-da);
+  --part-dot: var(--dot-da);
 }
 
 .part[data-part='cert'] {
   --part-bg: var(--part-cert);
   --part-tint: var(--tint-cert);
+  --part-dot: var(--dot-cert);
 }
 
 .part[data-part='contact'] {
   --part-bg: var(--part-contact);
   --part-tint: var(--tint-contact);
+  --part-dot: var(--dot-contact);
 }
 
 .part-body {
-  padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3.5rem, 8vw, 6rem);
+  padding-block: clamp(1.75rem, 4vw, 2.75rem) clamp(3rem, 7vw, 5rem);
 }
 
 /* ---------- 6. ANIMASI MASUK ---------------------------------------------- */

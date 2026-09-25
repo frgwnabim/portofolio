@@ -78,16 +78,11 @@ const gridId = `grid-${id}`;
 </section>
 
 <style>
+  /* 2 kolom sejak mobile supaya tidak terlalu makan tempat */
   .grid {
     display: grid;
-    gap: clamp(1rem, 2.2vw, 1.6rem);
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    gap: clamp(0.75rem, 2.2vw, 1.6rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (min-width: 1000px) {
