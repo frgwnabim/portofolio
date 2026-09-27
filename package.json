@@ -13,7 +13,8 @@
     "zip": "npm run build && cd dist && zip -r ../portfolio-dist.zip . -x '.DS_Store' && cd .."
   },
   "dependencies": {
-    "astro": "^7.3.3"
+    "astro": "^7.3.3",
+    "pdfjs-dist": "^6.3.289"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

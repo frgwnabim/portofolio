@@ -2,7 +2,7 @@
    DATA SERTIFIKAT
    -----------------------------------------------------------------------------
    Edit file ini untuk menambah / mengubah sertifikat. Semua sertifikat tampil
-   di halaman terpisah (/sertifikat) yang dibuka di tab baru dari beranda.
+   di halaman terpisah (/sertifikat), dibuka dari tombol di bagian "Tentang saya".
 
    Cara nambah sertifikat baru:
    1. Taruh file sertifikat (gambar .webp/.png/.jpg atau .pdf) di folder

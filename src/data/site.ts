@@ -52,7 +52,11 @@ export const site = {
     github: 'https://github.com/frgwnabim',
     linkedin: 'https://www.linkedin.com/in/fergiawan-abimanyu-502046267/',
     instagram: '',
-    /** File CV di folder public/, contoh '/cv-fergiawan-abim.pdf'. Kosongkan kalau belum ada. */
+    /**
+     * File CV (PDF) di folder public/cv/, contoh '/cv/cv-fergiawan-abimanyu.pdf'.
+     * Tampil di halaman /cv dan bisa diunduh HRD. Kosongkan kalau belum ada.
+     * CV dari Word (.docx) harus di-export dulu ke PDF (File > Save As > PDF).
+     */
     resume: '',
   },
 
@@ -104,7 +108,6 @@ export const navLinks = [
   { label: 'Tentang', href: '#tentang' },
   { label: 'Software Engineering', href: '#software-engineering' },
   { label: 'Data Analytics', href: '#data-analytics' },
-  { label: 'Sertifikat', href: '#sertifikat' },
   { label: 'Kontak', href: '#kontak' },
 ];
 
@@ -123,7 +126,6 @@ export const sections = {
     description: '',
   },
   certificates: {
-    id: 'sertifikat',
     title: 'Sertifikat',
     description: 'Sertifikasi dan pelatihan yang sudah saya selesaikan.',
   },

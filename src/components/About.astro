@@ -8,6 +8,23 @@ import SectionBanner from './SectionBanner.astro';
   <div class="container part-body about-grid">
     <div class="about-copy reveal">
       {site.about.map((paragraph) => <p>{paragraph}</p>)}
+
+      <div class="about-actions">
+        <a class="btn btn--primary" href="/cv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+            <path d="M14 3v5h5M9 13h6M9 17h4" />
+          </svg>
+          Lihat CV
+        </a>
+        <a class="btn btn--ghost" href="/sertifikat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="9" r="6" />
+            <path d="m8.2 13.6-1.7 7.4 5.5-3 5.5 3-1.7-7.4" />
+          </svg>
+          Lihat sertifikat
+        </a>
+      </div>
     </div>
 
     <div class="skills reveal" style="--reveal-delay:120ms">
@@ -61,6 +78,13 @@ import SectionBanner from './SectionBanner.astro';
 
   .about-copy p {
     color: var(--ink-2);
+  }
+
+  .about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
   }
 
   .skills {

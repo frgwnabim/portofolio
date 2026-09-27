@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionBanner from '../components/SectionBanner.astro';
+import { site } from '../data/site';
+
+const file = site.socials.resume;
+// Nama file waktu diunduh, contoh 'cv-fergiawan-abimanyu.pdf'
+const downloadName = file.split('/').pop() || 'cv.pdf';
+---
+
+<BaseLayout
+  title={`CV | ${site.name}`}
+  description={`Curriculum vitae ${site.name}, ${site.role}.`}
+>
+  <section class="part" data-part="about">
+    <SectionBanner number="01" title="Curriculum Vitae" subtitle={site.role} icon="user" />
+
+    <div class="container part-body">
+      <div class="toolbar">
+        <a class="back" href="/#tentang">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M11 18l-6-6 6-6" />
+          </svg>
+          Kembali ke Tentang saya
+        </a>
+
+        {
+          file && (
+            <div class="actions">
+              <a class="btn btn--ghost" href={file} target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+                Buka di tab baru
+              </a>
+              <a class="btn btn--primary" href={file} download={downloadName}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+                </svg>
+                Download PDF
+              </a>
+            </div>
+          )
+        }
+      </div>
+
+      {
+        file ? (
+          <div class="viewer" id="cv-viewer" data-src={file}>
+            <p class="status" id="cv-status" role="status">
+              Memuat CV...
+            </p>
+            <div class="pages" id="cv-pages" />
+          </div>
+        ) : (
+          <p class="empty">
+            CV belum tersedia. Taruh file PDF di <code>public/cv/</code>, lalu isi{' '}
+            <code>socials.resume</code> di <code>src/data/site.ts</code>.
+          </p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .part {
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    transition: color 0.2s var(--ease);
+  }
+
+  .back:hover {
+    color: var(--brand-strong);
+  }
+
+  .back svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .viewer {
+    padding: clamp(0.6rem, 2.5vw, 1.5rem);
+    border-radius: var(--radius-lg);
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+  }
+
+  .pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.6rem, 2vw, 1.25rem);
+  }
+
+  /* Halaman PDF selalu putih seperti kertas, juga di mode gelap */
+  .pages :global(canvas) {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .status {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--ink-3);
+  }
+
+  .status[hidden] {
+    display: none;
+  }
+
+  .status :global(a) {
+    font-weight: 700;
+    color: var(--brand-strong);
+  }
+
+  .empty {
+    padding: 2rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    text-align: center;
+    color: var(--ink-3);
+  }
+
+  .empty code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--brand-strong);
+  }
+</style>
+
+<script>
+  /* Render PDF pakai pdf.js supaya tampil sama di semua browser,
+     termasuk HP yang biasanya tidak bisa menampilkan PDF di dalam halaman. */
+  import { GlobalWorkerOptions, getDocument, type PDFDocumentProxy } from 'pdfjs-dist';
+  import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+  GlobalWorkerOptions.workerSrc = workerUrl;
+
+  const viewer = document.getElementById('cv-viewer');
+  const pagesEl = document.getElementById('cv-pages');
+  const statusEl = document.getElementById('cv-status');
+  const src = viewer?.dataset.src;
+
+  const renderPages = async (pdf: PDFDocumentProxy) => {
+    if (!pagesEl) return;
+    const width = pagesEl.clientWidth;
+    const ratio = window.devicePixelRatio || 1;
+    const canvases: HTMLCanvasElement[] = [];
+
+    for (let n = 1; n <= pdf.numPages; n++) {
+      const page = await pdf.getPage(n);
+      const base = page.getViewport({ scale: 1 });
+      const scale = (Math.min(width, 900) / base.width) * ratio;
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.setAttribute('aria-label', `Halaman ${n} dari ${pdf.numPages}`);
+      canvas.setAttribute('role', 'img');
+
+      await page.render({ canvas, viewport }).promise;
+      canvases.push(canvas);
+    }
+
+    pagesEl.replaceChildren(...canvases);
+  };
+
+  if (src && pagesEl && statusEl) {
+    getDocument({ url: src })
+      .promise.then(async (pdf) => {
+        await renderPages(pdf);
+        statusEl.hidden = true;
+
+        // Render ulang kalau lebar layar berubah (misal HP diputar)
+        let lastWidth = pagesEl.clientWidth;
+        let timer: number | undefined;
+        window.addEventListener('resize', () => {
+          window.clearTimeout(timer);
+          timer = window.setTimeout(() => {
+            if (pagesEl.clientWidth === lastWidth) return;
+            lastWidth = pagesEl.clientWidth;
+            renderPages(pdf);
+          }, 250);
+        });
+      })
+      .catch(() => {
+        statusEl.innerHTML = '';
+        statusEl.append(
+          'CV tidak bisa ditampilkan di browser ini. ',
+          Object.assign(document.createElement('a'), {
+            href: src,
+            target: '_blank',
+            rel: 'noopener',
+            textContent: 'Buka PDF-nya langsung',
+          }),
+          '.'
+        );
+      });
+  }
+</script>
