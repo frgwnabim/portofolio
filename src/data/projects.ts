@@ -54,6 +54,7 @@ export const softwareProjects: Project[] = [
     repo: 'https://github.com/frgwnabim/banijya_shop',
     year: '2026',
     status: 'live',
+    cover: '/previews/preview-banijya_shop.png',
   },
   {
     title: 'Noisecore',
@@ -64,6 +65,18 @@ export const softwareProjects: Project[] = [
     repo: 'https://github.com/frgwnabim/noisecore-project',
     year: '2025',
     status: 'live',
+    cover: '/previews/preview-noisecore.png',
+  },
+    {
+    title: 'Finance Management App',
+    description:
+      'Website Pengelolaan Keuangan secara online.',
+    link: 'https://finance-management-app-f001.vercel.app/',
+    tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS', 'Auth.js', 'Recharts'],
+    repo: 'https://github.com/frgwnabim/finance_management_app',
+    year: '2025',
+    status: 'live',
+    cover: '/previews/preview-finance_management_app.png',
   },
 ];
 
@@ -80,15 +93,27 @@ export const dataProjects: Project[] = [
     repo: 'https://github.com/frgwnabim/DA-TransJakarta_Bus_Allocated',
     year: '2025',
     status: 'live',
+    cover: '/previews/preview-da_trans_jakarta_bus_allocated.png',
   },
   {
-    title: 'zzzzzz',
+    title: 'Hotel Booking Analysis',
     description:
-      'Visualisasi tren penjualan multi-cabang dengan filter periode, drill-down kategori, dan perbandingan target.',
-    link: 'https://contoh-sales-dashboard.vercel.app',
-    tags: ['Power BI', 'SQL', 'DAX'],
-    year: '2025',
+      'Pembatalan pemesanan hotel dianalisis untuk mengidentifikasi pola dan tren.',
+    link: 'https://da-hotel-booking-analyst.vercel.app/',
+    tags: ['Power BI', 'SQL', 'Python'],
+    year: '2026',
     status: 'live',
-    highlight: '18 KPI terpantau',
+    cover: '/previews/preview-da_hotel_booking_analyst.png',
   },
+  {
+    title: 'Amazon India Sales Analysis',
+    description:
+      'Analisis data penjualan Amazon India untuk mengidentifikasi tren dan pola pembelian.',
+    link: 'https://vercel.com/fergiawanabim-6100s-projects/da-amazon-india-analyst',
+    tags: ['Power BI', 'SQL', 'Python'],
+    year: '2026',
+    status: 'live',
+    cover: '/previews/preview-da_amazon_india_analyst.png',
+  },
+  
 ];
