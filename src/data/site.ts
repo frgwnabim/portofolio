@@ -52,13 +52,21 @@ export const site = {
     github: 'https://github.com/frgwnabim',
     linkedin: 'https://www.linkedin.com/in/fergiawan-abimanyu-502046267/',
     instagram: '',
-    /**
-     * File CV (PDF) di folder public/cv/, contoh '/cv/cv-fergiawan-abimanyu.pdf'.
-     * Tampil di halaman /cv dan bisa diunduh HRD. Kosongkan kalau belum ada.
-     * CV dari Word (.docx) harus di-export dulu ke PDF (File > Save As > PDF).
-     */
-    resume: '',
   },
+
+  /**
+   * Daftar CV (PDF) di folder public/cv/, tampil sebagai tab di halaman /cv.
+   * - `file`  : path PDF, contoh '/cv/cv-fergiawan-abimanyu-se.pdf'.
+   *             Kosongkan ('') untuk menyembunyikan CV tersebut.
+   * - `id`    : kode singkat untuk link langsung, contoh /cv?v=de.
+   * - `label` : nama yang tampil di tab.
+   * - `accent`: warna tab, 'se' (biru) atau 'da' (hijau).
+   * CV dari Word (.docx) harus di-export dulu ke PDF (File > Save As > PDF).
+   */
+  resumes: [
+    { id: 'se', label: 'Software Engineer', accent: 'se' as const, file: '' },
+    { id: 'de', label: 'Data Engineer', accent: 'da' as const, file: '' },
+  ],
 
   /** Keahlian, dikelompokkan supaya gampang dibaca. */
   skills: [

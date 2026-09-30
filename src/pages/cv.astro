@@ -3,9 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionBanner from '../components/SectionBanner.astro';
 import { site } from '../data/site';
 
-const file = site.socials.resume;
-// Nama file waktu diunduh, contoh 'cv-fergiawan-abimanyu.pdf'
-const downloadName = file.split('/').pop() || 'cv.pdf';
+// Hanya CV yang file-nya sudah diisi yang ditampilkan
+const resumes = site.resumes
+  .filter((cv) => cv.file)
+  .map((cv) => ({
+    ...cv,
+    // Nama file waktu diunduh, contoh 'cv-fergiawan-abimanyu-se.pdf'
+    downloadName: cv.file.split('/').pop() || `cv-${cv.id}.pdf`,
+  }));
 ---
 
 <BaseLayout
@@ -25,37 +30,69 @@ const downloadName = file.split('/').pop() || 'cv.pdf';
         </a>
 
         {
-          file && (
-            <div class="actions">
-              <a class="btn btn--ghost" href={file} target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
-                Buka di tab baru
-              </a>
-              <a class="btn btn--primary" href={file} download={downloadName}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
-                </svg>
-                Download PDF
-              </a>
+          resumes.length > 1 && (
+            <div class="tabs" role="tablist" aria-label="Pilih CV">
+              {resumes.map((cv, i) => (
+                <button
+                  class="tab"
+                  type="button"
+                  role="tab"
+                  id={`cv-tab-${cv.id}`}
+                  data-accent={cv.accent}
+                  data-id={cv.id}
+                  aria-controls={`cv-panel-${cv.id}`}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  tabindex={i === 0 ? 0 : -1}
+                >
+                  {cv.label}
+                </button>
+              ))}
             </div>
           )
         }
       </div>
 
       {
-        file ? (
-          <div class="viewer" id="cv-viewer" data-src={file}>
-            <p class="status" id="cv-status" role="status">
-              Memuat CV...
-            </p>
-            <div class="pages" id="cv-pages" />
-          </div>
+        resumes.length > 0 ? (
+          resumes.map((cv, i) => (
+            <div
+              class="panel"
+              id={`cv-panel-${cv.id}`}
+              data-id={cv.id}
+              role={resumes.length > 1 ? 'tabpanel' : undefined}
+              aria-labelledby={resumes.length > 1 ? `cv-tab-${cv.id}` : undefined}
+              hidden={i !== 0}
+            >
+              <div class="panel-head">
+                <h2>CV {cv.label}</h2>
+                <div class="actions">
+                  <a class="btn btn--ghost" href={cv.file} target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M7 17 17 7M9 7h8v8" />
+                    </svg>
+                    Buka di tab baru
+                  </a>
+                  <a class="btn btn--primary" href={cv.file} download={cv.downloadName}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+                    </svg>
+                    Download PDF
+                  </a>
+                </div>
+              </div>
+
+              <div class="viewer" data-src={cv.file}>
+                <p class="status" role="status">
+                  Memuat CV...
+                </p>
+                <div class="pages" />
+              </div>
+            </div>
+          ))
         ) : (
           <p class="empty">
             CV belum tersedia. Taruh file PDF di <code>public/cv/</code>, lalu isi{' '}
-            <code>socials.resume</code> di <code>src/data/site.ts</code>.
+            <code>resumes</code> di <code>src/data/site.ts</code>.
           </p>
         )
       }
@@ -100,6 +137,78 @@ const downloadName = file.split('/').pop() || 'cv.pdf';
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
+  }
+
+  .tabs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 0.35rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+  }
+
+  .tab {
+    --tab-bg: var(--gradient-se);
+    padding: 0.5rem 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+
+  @media (max-width: 560px) {
+    .tabs {
+      width: 100%;
+    }
+
+    .tab {
+      padding: 0.5rem 0.6rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  .tab[data-accent='da'] {
+    --tab-bg: var(--gradient-da);
+  }
+
+  .tab:hover {
+    color: var(--ink);
+  }
+
+  .tab[aria-selected='true'] {
+    background: var(--tab-bg);
+    color: #fff;
+  }
+
+  .tab:focus-visible {
+    outline: 2px solid var(--brand-strong);
+    outline-offset: 2px;
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+
+  .panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .panel-head h2 {
+    font-size: clamp(1.15rem, 2.5vw, 1.4rem);
   }
 
   .viewer {
@@ -160,18 +269,15 @@ const downloadName = file.split('/').pop() || 'cv.pdf';
 <script>
   /* Render PDF pakai pdf.js supaya tampil sama di semua browser,
      termasuk HP yang biasanya tidak bisa menampilkan PDF di dalam halaman. */
-  import { GlobalWorkerOptions, getDocument, type PDFDocumentProxy } from 'pdfjs-dist';
-  import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+  import { GlobalWorkerOptions, getDocument, type PDFDocumentProxy } from 'pdfjs-dist/legacy/build/pdf.mjs';
+  import workerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url';
 
   GlobalWorkerOptions.workerSrc = workerUrl;
 
-  const viewer = document.getElementById('cv-viewer');
-  const pagesEl = document.getElementById('cv-pages');
-  const statusEl = document.getElementById('cv-status');
-  const src = viewer?.dataset.src;
+  type Viewer = { pdf?: PDFDocumentProxy; lastWidth: number };
+  const loaded = new Map<HTMLElement, Viewer>();
 
-  const renderPages = async (pdf: PDFDocumentProxy) => {
-    if (!pagesEl) return;
+  const renderPages = async (pdf: PDFDocumentProxy, pagesEl: HTMLElement) => {
     const width = pagesEl.clientWidth;
     const ratio = window.devicePixelRatio || 1;
     const canvases: HTMLCanvasElement[] = [];
@@ -195,23 +301,23 @@ const downloadName = file.split('/').pop() || 'cv.pdf';
     pagesEl.replaceChildren(...canvases);
   };
 
-  if (src && pagesEl && statusEl) {
+  // PDF baru dimuat waktu panelnya dibuka, supaya halaman tetap ringan
+  const loadViewer = (viewer: HTMLElement) => {
+    if (loaded.has(viewer)) return;
+    const src = viewer.dataset.src;
+    const pagesEl = viewer.querySelector<HTMLElement>('.pages');
+    const statusEl = viewer.querySelector<HTMLElement>('.status');
+    if (!src || !pagesEl || !statusEl) return;
+
+    const state: Viewer = { lastWidth: 0 };
+    loaded.set(viewer, state);
+
     getDocument({ url: src })
       .promise.then(async (pdf) => {
-        await renderPages(pdf);
+        state.pdf = pdf;
+        await renderPages(pdf, pagesEl);
+        state.lastWidth = pagesEl.clientWidth;
         statusEl.hidden = true;
-
-        // Render ulang kalau lebar layar berubah (misal HP diputar)
-        let lastWidth = pagesEl.clientWidth;
-        let timer: number | undefined;
-        window.addEventListener('resize', () => {
-          window.clearTimeout(timer);
-          timer = window.setTimeout(() => {
-            if (pagesEl.clientWidth === lastWidth) return;
-            lastWidth = pagesEl.clientWidth;
-            renderPages(pdf);
-          }, 250);
-        });
       })
       .catch(() => {
         statusEl.innerHTML = '';
@@ -226,5 +332,64 @@ const downloadName = file.split('/').pop() || 'cv.pdf';
           '.'
         );
       });
-  }
+  };
+
+  // Render ulang CV yang sedang tampil kalau lebar layar berubah (misal HP diputar)
+  const rerenderVisible = () => {
+    loaded.forEach((state, viewer) => {
+      const pagesEl = viewer.querySelector<HTMLElement>('.pages');
+      if (!state.pdf || !pagesEl || !pagesEl.clientWidth) return;
+      if (pagesEl.clientWidth === state.lastWidth) return;
+      state.lastWidth = pagesEl.clientWidth;
+      renderPages(state.pdf, pagesEl);
+    });
+  };
+
+  let timer: number | undefined;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(rerenderVisible, 250);
+  });
+
+  const panels = [...document.querySelectorAll<HTMLElement>('.panel')];
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tab')];
+
+  const showPanel = (id: string, updateUrl = true) => {
+    const panel = panels.find((p) => p.dataset.id === id) ?? panels[0];
+    if (!panel) return;
+
+    panels.forEach((p) => (p.hidden = p !== panel));
+    tabs.forEach((tab) => {
+      const active = tab.dataset.id === panel.dataset.id;
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+
+    const viewer = panel.querySelector<HTMLElement>('.viewer');
+    if (viewer) {
+      loadViewer(viewer);
+      rerenderVisible();
+    }
+
+    // Simpan pilihan di URL (contoh /cv?v=de) supaya link-nya bisa dibagikan
+    if (updateUrl && tabs.length) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('v', panel.dataset.id ?? '');
+      history.replaceState(null, '', url);
+    }
+  };
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => showPanel(tab.dataset.id ?? ''));
+    tab.addEventListener('keydown', (e) => {
+      const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!step) return;
+      e.preventDefault();
+      const next = tabs[(i + step + tabs.length) % tabs.length];
+      next.focus();
+      showPanel(next.dataset.id ?? '');
+    });
+  });
+
+  showPanel(new URLSearchParams(window.location.search).get('v') ?? '', false);
 </script>

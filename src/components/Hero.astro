@@ -4,7 +4,7 @@ import { site } from '../data/site';
 // Kata di dalam kurung kurawal pada site.hero.headline diberi warna gradient.
 const headlineParts = site.hero.headline.split(/(\{[^}]+\})/g).filter(Boolean);
 
-const hasResume = Boolean(site.socials.resume);
+const hasResume = site.resumes.some((cv) => cv.file);
 ---
 
 <section class="hero" id="top">
