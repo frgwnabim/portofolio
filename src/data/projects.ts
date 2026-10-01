@@ -101,6 +101,7 @@ export const dataProjects: Project[] = [
       'Pembatalan pemesanan hotel dianalisis untuk mengidentifikasi pola dan tren.',
     link: 'https://da-hotel-booking-analyst.vercel.app/',
     tags: ['Power BI', 'SQL', 'Python'],
+    repo: 'https://github.com/frgwnabim/DA-Hotel_Booking_Analyst',
     year: '2026',
     status: 'live',
     cover: '/previews/preview-da_hotel_booking_analyst.png',
@@ -109,11 +110,22 @@ export const dataProjects: Project[] = [
     title: 'Amazon India Sales Analysis',
     description:
       'Analisis data penjualan Amazon India untuk mengidentifikasi tren dan pola pembelian.',
-    link: 'https://vercel.com/fergiawanabim-6100s-projects/da-amazon-india-analyst',
+    link: 'https://da-amazon-india-analyst.vercel.app/',
     tags: ['Power BI', 'SQL', 'Python'],
+    repo: 'https://github.com/frgwnabim/DA-Amazon_India_analyst',
     year: '2026',
     status: 'live',
     cover: '/previews/preview-da_amazon_india_analyst.png',
   },
-  
+    {
+    title: 'Garbage Classification',
+    description:
+      'Klasifikasi Sampah dengan CNN dan Transfer Learning',
+    link: 'https://da-garbageclassification.vercel.app/',
+    tags: ['CNN', 'MobileNetV2 ', 'Deep Learning', 'Python'],
+    repo: 'https://github.com/frgwnabim/DA-Garbage_Classification',
+    year: '2026',
+    status: 'live',
+    cover: '/previews/preview-da_garbageclassification.png',
+  },
 ];
