@@ -29,10 +29,17 @@ ErrorDocument 404 /404.html
   # RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
 
   # ---------- 4. URL bersih tanpa .html -------------------------------------
+  # Buang garis miring di akhir kalau bukan folder asli: /cv/ -> /cv
+  # (tanpa ini, /cv/ bisa bikin loop rewrite dan berakhir 500)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
   # /tentang akan menampilkan /tentang.html
+  # Pola [^./]+ (tanpa titik/garis miring) memastikan aturan ini hanya jalan
+  # sekali, jadi tidak bisa loop jadi cv.html.html dst.
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}\.html -f
-  RewriteRule ^(.*)$ $1.html [L]
+  RewriteRule ^([^./]+)$ $1.html [L]
 
   # Hilangkan .html dari alamat kalau ada yang mengetiknya langsung
   # (index.html dan 404.html sengaja dilewati)
