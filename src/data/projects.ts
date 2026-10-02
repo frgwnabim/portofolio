@@ -67,7 +67,7 @@ export const softwareProjects: Project[] = [
     status: 'live',
     cover: '/previews/preview-noisecore.png',
   },
-    {
+  {
     title: 'Finance Management App',
     description:
       'Website Pengelolaan Keuangan secara online.',
@@ -77,6 +77,17 @@ export const softwareProjects: Project[] = [
     year: '2025',
     status: 'live',
     cover: '/previews/preview-finance_management_app.png',
+  },
+  {
+    title: 'ToddlerTime',
+    description:
+      'Tontonan aman dan ceria untuk anak balita, dengan kontrol orang tua yang lengkap.',
+    link: 'https://toddler-time-chi.vercel.app/',
+    tags: ['Next.js', 'TypeScript', 'Supabase', 'Tailwind CSS', 'bcryptjs'],
+    repo: 'https://github.com/frgwnabim/ToddlerTime',
+    year: '2025',
+    status: 'live',
+    cover: '/previews/preview-toddler_time.png',
   },
 ];
 

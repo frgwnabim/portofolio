@@ -57,7 +57,7 @@ export const site = {
      * Tampil di halaman /cv dan bisa diunduh HRD. Kosongkan kalau belum ada.
      * CV dari Word (.docx) harus di-export dulu ke PDF (File > Save As > PDF).
      */
-    resume: '',
+    resume: '/cv/cv_2026-DA1.0.pdf',
   },
 
   /** Keahlian, dikelompokkan supaya gampang dibaca. */
