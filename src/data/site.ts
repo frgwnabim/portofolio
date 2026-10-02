@@ -53,11 +53,12 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/fergiawan-abimanyu-502046267/',
     instagram: '',
     /**
-     * File CV (PDF) di folder public/cv/, contoh '/cv/cv-fergiawan-abimanyu.pdf'.
+     * File CV (PDF) di folder public/resume/, contoh '/resume/cv-fergiawan-abimanyu.pdf'.
+     * JANGAN taruh di folder public/cv/: namanya bentrok dengan halaman /cv (bikin 403).
      * Tampil di halaman /cv dan bisa diunduh HRD. Kosongkan kalau belum ada.
      * CV dari Word (.docx) harus di-export dulu ke PDF (File > Save As > PDF).
      */
-    resume: '/cv/cv_2026-DA1.0.pdf',
+    resume: '/resume/cv_2026-DA-1.0.pdf',
   },
 
   /** Keahlian, dikelompokkan supaya gampang dibaca. */
