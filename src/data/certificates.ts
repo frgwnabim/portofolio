@@ -39,14 +39,33 @@ export type Certificate = {
 };
 
 export const certificates: Certificate[] = [
-  // {
-  //   title: 'Google Data Analytics Professional Certificate',
-  //   issuer: 'Google',
-  //   date: 'Mar 2025',
-  //   image: '/certificates/google-da.webp',
-  //   link: 'https://www.coursera.org/account/accomplishments/...',
-  //   credentialId: 'ABC123XYZ',
-  //   category: 'da',
-  //   skills: ['SQL', 'Tableau', 'R'],
-  // },
+  {
+    title: 'BNSP - Software and Game Development',
+    issuer: 'Badan Nasional Sertifikasi Profesi',
+    date: '2024',
+    image: '/certificates/sertif1.pdf',
+    // link: 'https://www.coursera.org/account/accomplishments/...',
+    // credentialId: 'ABC123XYZ',
+    // category: 'da',
+    // skills: ['SQL', 'Tableau', 'R'],
+  },
+  {
+    title: 'Implementasi Quality Assurance Dalam Pengembangan Aplikasi SmartGov di PT Cartenz Technology',
+    issuer: 'SMK Telkom Jakarta',
+    date: '2024',
+    image: '/certificates/sertif2.pdf',
+  },
+  {
+    title: 'Pembuatan CRUD Untuk Website Dinamis Sederhana Menggunakan Bootstrap',
+    issuer: 'SMK Telkom Jakarta',
+    date: '2023',
+    image: '/certificates/sertif3.pdf',
+  },
+  {
+    title: 'Membuat Aplikasi Pelayanan Pengaduan Sekolah Sederhana Berbasis Website Menggunakan Bahasa Pemrograman PHP, Basis Data dengan MySQL dan Desain Front End Dengan Bootstrap',
+    issuer: 'SMK Telkom Jakarta',
+    date: '2024',
+    image: '/certificates/sertif4.pdf',
+  },
 ];
+
