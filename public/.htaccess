@@ -29,10 +29,14 @@ ErrorDocument 404 /404.html
   # RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
 
   # ---------- 4. URL bersih tanpa .html -------------------------------------
-  # /tentang akan menampilkan /tentang.html
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}\.html -f
-  RewriteRule ^(.*)$ $1.html [L]
+  # /tentang dan /tentang/ sama-sama menampilkan /tentang.html.
+  # Sengaja TANPA redirect untuk versi bergaris miring: browser yang masih
+  # menyimpan redirect lama /cv -> /cv/ akan loop (ERR_TOO_MANY_REDIRECTS)
+  # kalau server membalas /cv/ -> /cv.
+  # Pola [^./]+ (tanpa titik/garis miring) memastikan aturan ini hanya jalan
+  # sekali, jadi tidak bisa loop jadi cv.html.html dst.
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^([^./]+)/?$ $1.html [L]
 
   # Hilangkan .html dari alamat kalau ada yang mengetiknya langsung
   # (index.html dan 404.html sengaja dilewati)
